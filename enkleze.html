@@ -1,0 +1,2634 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
+<meta name="theme-color" content="#6366f1">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="LinguaPro">
+<meta name="mobile-web-app-capable" content="yes">
+<title>LinguaPro - تعلم اللغات</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 192 192'%3E%3Crect width='192' height='192' rx='40' fill='%236366f1'/%3E%3Ctext x='96' y='125' font-size='100' text-anchor='middle'%3E🌍%3C/text%3E%3C/svg%3E">
+<link rel="apple-touch-icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 180 180'%3E%3Crect width='180' height='180' rx='40' fill='%236366f1'/%3E%3Ctext x='90' y='125' font-size='110' text-anchor='middle'%3E🌍%3C/text%3E%3C/svg%3E">
+
+<style>
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+:root{
+  --p:#6366f1;--pd:#4f46e5;--s:#f59e0b;--a:#ec4899;
+  --ok:#10b981;--err:#ef4444;--warn:#f59e0b;
+  --bg:#f8fafc;--cb:#fff;--tx:#1e293b;--tl:#64748b;
+  --bd:#e2e8f0;--hv:#f1f5f9;
+  --sh:0 4px 20px rgba(0,0,0,.08);
+  --shl:0 10px 40px rgba(0,0,0,.15);
+  --r:16px;--rl:24px;
+  --t:all .3s cubic-bezier(.4,0,.2,1)
+}
+[data-theme=dark]{
+  --bg:#0f172a;--cb:#1e293b;--tx:#f1f5f9;--tl:#94a3b8;
+  --bd:#334155;--hv:#334155;
+  --sh:0 4px 20px rgba(0,0,0,.4);
+  --shl:0 10px 40px rgba(0,0,0,.6)
+}
+html,body{height:100%;overflow-x:hidden;overscroll-behavior-y:contain}
+body{font-family:-apple-system,'Segoe UI',Tahoma,sans-serif;background:var(--bg);color:var(--tx);line-height:1.6;transition:background .3s,color .3s;padding-bottom:75px;-webkit-user-select:none;user-select:none;-webkit-touch-callout:none}
+button,input{font-family:inherit}
+button{cursor:pointer;border:none;background:none;color:inherit}
+input{-webkit-user-select:text;user-select:text}
+.hide{display:none!important}
+.pwa-mode .install-banner{display:none!important}
+
+/* Splash */
+.splash{position:fixed;inset:0;background:linear-gradient(135deg,#6366f1,#ec4899);display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:9999;transition:opacity .5s}
+.splash-logo{font-size:5rem;animation:fl 1.5s infinite}
+.splash-title{color:#fff;font-size:1.8rem;font-weight:900;margin:15px 0 5px}
+.splash-sub{color:rgba(255,255,255,.9)}
+.splash-loader{width:40px;height:40px;border:4px solid rgba(255,255,255,.3);border-top-color:#fff;border-radius:50%;animation:spin .8s linear infinite;margin-top:20px}
+@keyframes spin{to{transform:rotate(360deg)}}
+@keyframes fl{0%,100%{transform:translateY(0)}50%{transform:translateY(-12px)}}
+
+/* Trial Banner */
+.trial-banner{position:fixed;top:0;left:0;right:0;background:linear-gradient(90deg,#f59e0b,#ec4899);color:#fff;padding:8px 15px;display:flex;justify-content:space-between;align-items:center;font-size:.8rem;font-weight:800;z-index:99;padding-top:max(8px,env(safe-area-inset-top))}
+.trial-banner button{background:rgba(255,255,255,.25);color:#fff;padding:4px 12px;border-radius:20px;font-weight:800;font-size:.75rem;border:none;cursor:pointer}
+body.has-trial-banner{padding-top:35px}
+body.has-trial-banner .hd{top:35px}
+.trial-info{background:rgba(255,255,255,.2);padding:12px;border-radius:12px;font-size:.85rem;margin-bottom:15px;line-height:1.6;text-align:center}
+
+/* Activation Screen */
+.paywall{position:fixed;inset:0;background:linear-gradient(135deg,#6366f1,#ec4899);z-index:9998;overflow-y:auto;padding:20px;display:flex;align-items:center;justify-content:center}
+.paywall-content{max-width:440px;width:100%;text-align:center;color:#fff;padding:20px 0}
+.paywall-icon{font-size:4rem;margin-bottom:15px;animation:fl 2s infinite}
+.activation-step h1{color:#fff;font-size:1.5rem;margin-bottom:8px}
+.activation-step>p{color:rgba(255,255,255,.9);margin-bottom:20px;font-size:.9rem}
+.pricing-card{background:#fff;color:#1e293b;border-radius:24px;padding:25px;position:relative;box-shadow:0 20px 60px rgba(0,0,0,.3);margin-bottom:15px}
+.pricing-badge{position:absolute;top:-12px;left:50%;transform:translateX(-50%);background:linear-gradient(135deg,#f59e0b,#ec4899);color:#fff;padding:4px 16px;border-radius:20px;font-size:.75rem;font-weight:800;white-space:nowrap}
+.pricing-title{font-size:1.2rem;margin-bottom:15px;color:#6366f1;font-weight:900}
+.pricing-price{display:flex;align-items:baseline;justify-content:center;gap:5px;margin-bottom:20px}
+.price-value{font-size:2.5rem;font-weight:900;color:#1e293b}
+.price-period{color:#64748b;font-weight:700;font-size:.85rem}
+.pricing-features{list-style:none;text-align:right;margin-bottom:20px;display:flex;flex-direction:column;gap:8px}
+.pricing-features li{font-size:.9rem;font-weight:600;color:#334155}
+.pricing-note{font-size:.75rem;color:#64748b;margin-top:10px;text-align:center}
+[data-theme=dark] .pricing-card{background:#1e293b;color:#f1f5f9}
+[data-theme=dark] .price-value{color:#f1f5f9}
+[data-theme=dark] .pricing-features li{color:#cbd5e1}
+.device-id-box{background:#f1f5f9;border-radius:12px;padding:12px;margin:15px 0}
+[data-theme=dark] .device-id-box{background:#0f172a}
+.device-id-box label{display:block;font-size:.8rem;color:#64748b;margin-bottom:6px;font-weight:700}
+.device-id{font-family:monospace;font-size:1.1rem;font-weight:900;color:#6366f1;letter-spacing:2px;text-align:center;padding:12px;background:#fff;border-radius:8px;word-break:break-all;border:2px dashed #6366f1}
+[data-theme=dark] .device-id{background:#1e293b;color:#a5b4fc}
+.btn-copy-id{width:100%;margin-top:8px;padding:10px;background:linear-gradient(135deg,#6366f1,#8b5cf6);color:#fff;border:none;border-radius:8px;font-weight:800;font-size:.85rem;cursor:pointer;transition:.3s}
+.btn-copy-id:active{transform:scale(.97)}
+.link-btn{background:none;border:none;color:#fff;text-decoration:underline;font-weight:700;cursor:pointer;font-size:.85rem;padding:4px}
+.license-input{width:100%;padding:15px;font-size:1.1rem;border:2px solid rgba(255,255,255,.3);border-radius:14px;background:rgba(255,255,255,.15);color:#fff;text-align:center;direction:ltr;font-family:monospace;font-weight:900;outline:none;letter-spacing:2px;transition:.3s}
+.license-input:focus{border-color:#fff;background:rgba(255,255,255,.25)}
+.license-input::placeholder{color:rgba(255,255,255,.6)}
+
+/* Buttons */
+.btn{padding:11px 20px;border-radius:14px;font-weight:800;font-size:.95rem;display:inline-flex;align-items:center;justify-content:center;gap:6px;transition:var(--t);white-space:nowrap}
+.btn:active{transform:scale(.96)}
+.bp{background:linear-gradient(135deg,var(--p),var(--pd));color:#fff}
+.bs{background:var(--cb);color:var(--tx);border:2px solid var(--bd)}
+.bok{background:var(--ok);color:#fff}
+.berr{background:var(--err);color:#fff}
+.bf{width:100%}
+.bsm{padding:8px 14px;font-size:.85rem}
+.blg{padding:16px 30px;font-size:1.05rem}
+.btn:disabled{opacity:.5}
+.btn-pro{background:linear-gradient(135deg,#f59e0b,#ec4899);color:#fff}
+.btn-ghost-pw{color:#fff;background:rgba(255,255,255,.15);font-weight:700;padding:12px 20px;border-radius:14px;display:inline-flex;align-items:center;justify-content:center;gap:6px;transition:var(--t);width:100%;cursor:pointer;border:none;font-size:.9rem}
+.btn-ghost-pw:active{background:rgba(255,255,255,.25);transform:scale(.97)}
+.btn-whatsapp{background:linear-gradient(135deg,#25d366,#128c7e);color:#fff;width:100%;padding:14px;border-radius:14px;font-size:1rem;font-weight:900;display:flex;align-items:center;justify-content:center;gap:8px;border:none;cursor:pointer;margin-top:15px;transition:.3s}
+.btn-whatsapp:active{transform:scale(.97)}
+
+/* Offline */
+.off{background:#991b1b;color:#fff;text-align:center;padding:6px;font-size:.8rem;font-weight:800;display:none}
+.off.show{display:block}
+
+/* HEADER */
+.hd{background:var(--cb);box-shadow:0 1px 3px rgba(0,0,0,.06);position:sticky;top:0;z-index:100;padding:10px 12px;padding-top:max(10px,env(safe-area-inset-top))}
+.hd-c{max-width:900px;margin:0 auto;display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap}
+.logo{font-weight:900;font-size:1.1rem;background:linear-gradient(135deg,var(--p),var(--a));-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;white-space:nowrap}
+.stats{display:flex;gap:5px;align-items:center;flex-wrap:wrap}
+.st{display:flex;align-items:center;gap:3px;background:var(--bg);padding:4px 8px;border-radius:20px;font-size:.78rem;font-weight:800}
+.st.streak{color:#f97316}.st.xp{color:var(--p)}.st.lv{color:var(--ok)}.st.gem{color:#06b6d4}
+.ib{background:var(--bg);border:1px solid var(--bd);width:34px;height:34px;border-radius:50%;font-size:1rem;display:flex;align-items:center;justify-content:center}
+.gp{height:3px;background:var(--bd);overflow:hidden}
+.gpf{height:100%;background:linear-gradient(90deg,var(--p),var(--a));transition:width .6s;width:0}
+
+/* MAIN */
+.mn{max-width:900px;margin:0 auto;padding:15px;min-height:60vh;animation:fi .4s}
+@keyframes fi{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+
+/* CARDS */
+.card{background:var(--cb);border-radius:var(--r);padding:16px;box-shadow:var(--sh);transition:var(--t)}
+.stt{font-size:1.1rem;font-weight:900;margin:20px 0 12px;display:flex;justify-content:space-between;align-items:center}
+.stt .lnk{font-size:.8rem;color:var(--p);font-weight:700;cursor:pointer}
+
+/* HERO */
+.hero{background:linear-gradient(135deg,var(--p),var(--a));color:#fff;padding:22px;border-radius:var(--rl);margin-bottom:18px;position:relative;overflow:hidden}
+.hero::before{content:'';position:absolute;top:-50%;right:-20%;width:200px;height:200px;background:rgba(255,255,255,.1);border-radius:50%}
+.hero h1{font-size:1.3rem;margin-bottom:6px;position:relative}
+.hero p{opacity:.95;font-size:.9rem;margin-bottom:14px;position:relative}
+.dg{background:rgba(255,255,255,.15);padding:12px;border-radius:14px;backdrop-filter:blur(10px);position:relative}
+.dgh{display:flex;justify-content:space-between;font-weight:800;font-size:.85rem;margin-bottom:8px}
+.dgb{height:8px;background:rgba(255,255,255,.3);border-radius:4px;overflow:hidden}
+.dgf{height:100%;background:#fff;border-radius:4px;transition:width .6s}
+
+/* Pro Badge */
+.pro-badge{display:inline-flex;align-items:center;gap:4px;background:linear-gradient(135deg,#f59e0b,#ec4899);color:#fff;padding:3px 10px;border-radius:20px;font-size:.7rem;font-weight:900}
+
+/* INSTALL BANNER */
+.install-banner{background:linear-gradient(135deg,#10b981,#059669);color:#fff;padding:14px 16px;border-radius:14px;margin-bottom:15px;display:none;align-items:center;gap:12px;box-shadow:var(--sh)}
+.install-banner.show{display:flex;animation:fi .5s}
+.install-banner button{background:rgba(255,255,255,.25);color:#fff;padding:8px 14px;border-radius:10px;font-weight:800;font-size:.85rem;border:none;cursor:pointer}
+.install-banner .ibx{background:transparent;width:28px;height:28px;padding:0;font-size:1rem;border-radius:50%}
+
+/* COURSES GRID */
+.cg{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:12px;margin-bottom:18px}
+.cc{background:var(--cb);border-radius:var(--r);padding:16px;cursor:pointer;transition:var(--t);border:2px solid var(--bd);position:relative}
+.cc:active{transform:scale(.98)}
+.cc.done{border-color:var(--ok)}
+.cc.done::after{content:'✓';position:absolute;top:10px;left:10px;background:var(--ok);color:#fff;width:24px;height:24px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:900;font-size:.8rem}
+.ci{font-size:2.5rem;margin-bottom:8px;display:block}
+.ct{font-size:1rem;font-weight:900;margin-bottom:4px}
+.cd{color:var(--tl);font-size:.8rem;margin-bottom:10px;min-height:32px}
+.cm{display:flex;justify-content:space-between;font-size:.75rem;color:var(--tl);margin-bottom:8px;font-weight:600}
+.lv{padding:2px 10px;border-radius:20px;font-weight:800;font-size:.7rem}
+.lv-A1{background:#dbeafe;color:#1e40af}
+.lv-A2{background:#d1fae5;color:#065f46}
+.lv-B1{background:#fef3c7;color:#92400e}
+.lv-B2{background:#fed7aa;color:#9a3412}
+.lv-C1{background:#fecaca;color:#991b1b}
+.lv-PRO{background:linear-gradient(135deg,#f59e0b,#ec4899);color:#fff}
+[data-theme=dark] .lv-A1{background:#1e3a8a;color:#dbeafe}
+[data-theme=dark] .lv-A2{background:#065f46;color:#d1fae5}
+[data-theme=dark] .lv-B1{background:#92400e;color:#fef3c7}
+[data-theme=dark] .lv-B2{background:#9a3412;color:#fed7aa}
+[data-theme=dark] .lv-C1{background:#991b1b;color:#fecaca}
+.pb{height:6px;background:var(--bd);border-radius:3px;overflow:hidden}
+.pf{height:100%;background:linear-gradient(90deg,var(--p),var(--a));border-radius:3px;transition:width .6s}
+
+/* FLASHCARD */
+.fcc{perspective:1500px;max-width:450px;margin:20px auto;height:320px}
+.fc{width:100%;height:100%;position:relative;transform-style:preserve-3d;transition:transform .7s cubic-bezier(.4,0,.2,1);cursor:pointer}
+.fc.flip{transform:rotateY(180deg)}
+.fcf{position:absolute;width:100%;height:100%;backface-visibility:hidden;border-radius:var(--rl);display:flex;flex-direction:column;align-items:center;justify-content:center;padding:24px;box-shadow:var(--shl);text-align:center}
+.fcfr{background:linear-gradient(135deg,var(--p),var(--pd));color:#fff}
+.fcb{background:var(--cb);border:2px solid var(--p);transform:rotateY(180deg);color:var(--tx)}
+.fcw{font-size:2.8rem;font-weight:900;margin-bottom:8px;direction:ltr;font-family:Helvetica,Arial,sans-serif;word-break:break-word}
+.fcp{font-size:1rem;opacity:.9;direction:ltr;margin-bottom:12px;font-family:Helvetica,Arial,sans-serif}
+.fce{font-size:1.1rem;font-weight:700;margin-bottom:8px;direction:ltr;font-family:Helvetica,Arial,sans-serif;color:var(--p)}
+.fct{color:var(--tl);font-size:.95rem}
+.spb{background:rgba(255,255,255,.2);border:2px solid rgba(255,255,255,.4);color:#fff;width:54px;height:54px;border-radius:50%;font-size:1.4rem;display:flex;align-items:center;justify-content:center;transition:var(--t)}
+.spb:active{transform:scale(.9)}
+.fcb .spb{background:var(--p);border-color:var(--p)}
+.fh{position:absolute;bottom:12px;font-size:.72rem;opacity:.7}
+@keyframes pls{0%,100%{transform:scale(1)}50%{transform:scale(1.1)}}
+.spb.playing{animation:pls .8s infinite}
+
+/* CONTROLS */
+.ctrl{display:flex;justify-content:center;gap:8px;margin-top:15px;flex-wrap:wrap}
+
+/* LESSON */
+.lh{display:flex;justify-content:space-between;align-items:center;margin-bottom:15px;gap:10px;flex-wrap:wrap}
+.lt{font-size:1rem;font-weight:900;display:flex;align-items:center;gap:8px}
+.lp{font-size:.8rem;color:var(--tl);font-weight:700}
+.lpb{height:8px;background:var(--bd);border-radius:4px;overflow:hidden;margin-bottom:18px}
+.lpf{height:100%;background:linear-gradient(90deg,var(--p),var(--a));transition:width .4s}
+
+/* QUIZ */
+.qc{max-width:550px;margin:0 auto;background:var(--cb);border-radius:var(--rl);padding:20px;box-shadow:var(--sh)}
+.qh{display:flex;justify-content:space-between;font-weight:800;color:var(--tl);font-size:.85rem;margin-bottom:15px}
+.qq{font-size:1.5rem;font-weight:900;margin-bottom:20px;text-align:center;direction:ltr;font-family:Helvetica,Arial,sans-serif;min-height:50px;display:flex;align-items:center;justify-content:center}
+.qab{background:var(--p);color:#fff;width:44px;height:44px;border-radius:50%;font-size:1.1rem;margin:0 auto 15px;display:flex;align-items:center;justify-content:center;cursor:pointer;border:none}
+.qo{display:grid;gap:10px}
+.qopt{padding:14px 16px;background:var(--bg);border:2px solid var(--bd);border-radius:14px;font-size:.95rem;font-weight:700;text-align:right;display:flex;align-items:center;gap:10px;transition:var(--t);cursor:pointer;color:var(--tx)}
+.qopt:active:not(.dis){transform:scale(.98)}
+.qopt .n{width:26px;height:26px;border-radius:50%;background:var(--bd);display:flex;align-items:center;justify-content:center;font-size:.75rem;flex-shrink:0}
+.qopt.ok{background:var(--ok);color:#fff;border-color:var(--ok)}
+.qopt.ok .n{background:rgba(255,255,255,.3)}
+.qopt.no{background:var(--err);color:#fff;border-color:var(--err)}
+.qopt.no .n{background:rgba(255,255,255,.3)}
+.qopt.dis{pointer-events:none}
+.qf{margin-top:15px;padding:12px;border-radius:14px;text-align:center;font-weight:800;display:none;animation:fi .3s}
+.qf.show{display:block}
+.qf.ok{background:#d1fae5;color:#065f46}
+.qf.no{background:#fee2e2;color:#991b1b}
+[data-theme=dark] .qf.ok{background:#065f46;color:#d1fae5}
+[data-theme=dark] .qf.no{background:#991b1b;color:#fee2e2}
+
+/* LISTENING & SPEAKING */
+.lnc,.spc{max-width:500px;margin:0 auto;text-align:center}
+.lnb{background:linear-gradient(135deg,var(--p),var(--a));color:#fff;width:100px;height:100px;border-radius:50%;font-size:2.5rem;margin-bottom:20px;box-shadow:0 0 30px rgba(99,102,241,.4);cursor:pointer;border:none}
+.lnb.playing{animation:pls .8s infinite}
+.lni{width:100%;padding:14px;font-size:1rem;border:2px solid var(--bd);border-radius:14px;background:var(--cb);color:var(--tx);text-align:center;direction:ltr;font-family:Helvetica,Arial,sans-serif;font-weight:700;outline:none}
+.lni:focus{border-color:var(--p)}
+.lni.ok{border-color:var(--ok);background:#d1fae5;color:#065f46}
+.lni.no{border-color:var(--err);background:#fee2e2;color:#991b1b}
+.spt{background:var(--bg);border-radius:var(--r);padding:20px;margin-bottom:15px}
+.spw{font-size:2rem;font-weight:900;color:var(--p);direction:ltr;font-family:Helvetica,Arial,sans-serif;margin-bottom:6px;word-break:break-word}
+.spp{color:var(--tl);direction:ltr;font-size:.95rem}
+.mic{background:linear-gradient(135deg,var(--err),var(--a));color:#fff;width:90px;height:90px;border-radius:50%;font-size:2.2rem;margin:15px auto;display:flex;align-items:center;justify-content:center;box-shadow:0 0 30px rgba(239,68,68,.4);border:none;cursor:pointer}
+.mic.rec{animation:rec 1.5s infinite}
+@keyframes rec{0%,100%{box-shadow:0 0 30px rgba(239,68,68,.4)}50%{box-shadow:0 0 60px rgba(239,68,68,.9)}}
+.spr{padding:16px;border-radius:var(--r);margin-top:15px;font-weight:800;display:none}
+.spr.show{display:block;animation:fi .3s}
+.sc{font-size:2.5rem;font-weight:900;margin:8px 0}
+
+/* STATS */
+.pstats{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:12px;margin-bottom:20px}
+.sc2{background:var(--cb);padding:15px;border-radius:var(--r);text-align:center;box-shadow:var(--sh)}
+.sc2 .v{font-size:1.7rem;font-weight:900;color:var(--p);margin-bottom:4px}
+.sc2 .l{color:var(--tl);font-size:.78rem;font-weight:700}
+
+/* HEATMAP */
+.hm{display:grid;grid-template-columns:repeat(7,1fr);gap:4px;margin:15px 0}
+.hmd{aspect-ratio:1;border-radius:4px;background:var(--bd)}
+.hmd.on{background:var(--ok)}
+.hmd.today{border:2px solid var(--p)}
+
+/* BADGES */
+.bg{display:grid;grid-template-columns:repeat(auto-fill,minmax(95px,1fr));gap:12px}
+.bc{background:var(--cb);padding:12px 8px;border-radius:var(--r);text-align:center;border:2px solid var(--bd)}
+.bc.earned{border-color:var(--s);background:linear-gradient(135deg,#fef3c7,#fed7aa)}
+[data-theme=dark] .bc.earned{background:linear-gradient(135deg,#78350f,#92400e)}
+.bc.locked{opacity:.5;filter:grayscale(1)}
+.bi{font-size:2rem;margin-bottom:6px}
+.bn{font-size:.72rem;font-weight:800}
+.bd2{font-size:.65rem;color:var(--tl);margin-top:3px}
+
+/* PROFILE */
+.pfc{background:linear-gradient(135deg,var(--p),var(--a));border-radius:var(--rl);padding:22px;text-align:center;color:#fff;margin-bottom:18px;position:relative;overflow:hidden}
+.pfc.pro{background:linear-gradient(135deg,#f59e0b,#ec4899)}
+.pav{font-size:4rem;background:rgba(255,255,255,.2);width:95px;height:95px;line-height:95px;border-radius:50%;margin:0 auto 10px;backdrop-filter:blur(10px)}
+.pnm{font-size:1.3rem;font-weight:900;margin-bottom:5px}
+.prk{opacity:.9;font-size:.85rem;background:rgba(255,255,255,.2);padding:4px 12px;border-radius:20px;display:inline-block}
+
+/* ROW */
+.row{display:flex;justify-content:space-between;align-items:center;padding:12px 0;border-bottom:1px solid var(--bd);gap:10px}
+.row:last-child{border-bottom:none}
+.row-t{font-weight:800;font-size:.95rem}
+.row-d{color:var(--tl);font-size:.78rem;margin-top:3px}
+
+/* TOGGLE */
+.tg{position:relative;width:46px;height:26px;flex-shrink:0}
+.tg input{opacity:0;width:0;height:0}
+.tgs{position:absolute;inset:0;background:var(--bd);border-radius:26px;transition:.3s}
+.tgs::before{content:'';position:absolute;height:20px;width:20px;left:3px;bottom:3px;background:#fff;border-radius:50%;transition:.3s}
+.tg input:checked+.tgs{background:var(--p)}
+.tg input:checked+.tgs::before{transform:translateX(20px)}
+
+/* BOTTOM NAV */
+.bn{position:fixed;bottom:0;left:0;right:0;background:var(--cb);border-top:1px solid var(--bd);display:flex;justify-content:space-around;padding:6px 0 max(6px,env(safe-area-inset-bottom));z-index:100;box-shadow:0 -4px 20px rgba(0,0,0,.05)}
+.nb{display:flex;flex-direction:column;align-items:center;gap:2px;padding:6px 8px;border-radius:14px;color:var(--tl);min-width:60px;transition:var(--t);cursor:pointer;border:none;background:none}
+.nb.active{color:var(--p);background:rgba(99,102,241,.1)}
+.ni{font-size:1.3rem}
+.nl{font-size:.65rem;font-weight:800}
+
+/* TOAST */
+.ts{position:fixed;bottom:90px;left:50%;transform:translateX(-50%) translateY(100px);background:var(--tx);color:var(--bg);padding:10px 20px;border-radius:20px;font-weight:800;opacity:0;transition:var(--t);z-index:20000;box-shadow:var(--shl);max-width:90%;text-align:center;font-size:.9rem}
+.ts.show{opacity:1;transform:translateX(-50%) translateY(0)}
+
+/* MODAL */
+.mo{position:fixed;inset:0;background:rgba(0,0,0,.6);display:flex;align-items:center;justify-content:center;z-index:1000;padding:20px;backdrop-filter:blur(4px)}
+.md{background:var(--cb);border-radius:var(--rl);max-width:450px;width:100%;max-height:85vh;overflow-y:auto;padding:24px;position:relative;animation:fi .3s}
+.mx{position:absolute;top:12px;left:12px;background:var(--bg);width:30px;height:30px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.9rem;cursor:pointer;border:none;color:var(--tx)}
+.md h2{margin-bottom:14px;color:var(--p);font-size:1.2rem}
+
+/* ONBOARDING */
+.ob{position:fixed;inset:0;background:var(--bg);display:flex;flex-direction:column;align-items:center;justify-content:center;padding:25px;z-index:1000;text-align:center}
+.ob-s{max-width:450px;animation:fi .5s}
+.ob-i{font-size:5rem;margin-bottom:20px;animation:fl 3s infinite}
+.ob-s h2{font-size:1.4rem;margin-bottom:10px;color:var(--p)}
+.ob-s p{font-size:.95rem;color:var(--tl);margin-bottom:30px}
+.ob-d{display:flex;gap:8px;margin-bottom:20px}
+.dot{width:8px;height:8px;border-radius:50%;background:var(--bd);transition:var(--t)}
+.dot.active{background:var(--p);width:24px;border-radius:4px}
+.ob-a{display:flex;gap:10px}
+
+/* CONFETTI */
+.cfc{position:fixed;inset:0;pointer-events:none;z-index:9999;overflow:hidden}
+.cfp{position:absolute;width:8px;height:8px;animation:cff 3s ease-out forwards;top:-20px}
+@keyframes cff{0%{opacity:1;transform:translateY(0) rotate(0)}100%{opacity:0;transform:translateY(100vh) rotate(720deg)}}
+
+/* RESPONSIVE */
+@media (max-width:600px){
+  .fcw{font-size:2.2rem}
+  .fcc{height:290px}
+  .cg{grid-template-columns:1fr}
+  .hero h1{font-size:1.15rem}
+  .qq{font-size:1.2rem}
+  .nl{display:none}
+  .ni{font-size:1.5rem}
+  .stats .st{padding:3px 6px;font-size:.7rem}
+  .logo{font-size:.95rem}
+}
+</style>
+</head>
+<body>
+
+<!-- Trial Banner -->
+<div id="trialBanner" class="trial-banner hide">
+  <span id="trialText">⏰ تجربة مجانية</span>
+  <button id="upgradeNow">اشترك الآن</button>
+</div>
+
+<div id="offlineBanner" class="off">📴 أنت غير متصل - التطبيق يعمل من الذاكرة</div>
+
+<!-- Splash -->
+<div id="splash" class="splash">
+  <div class="splash-logo">🌍</div>
+  <h1 class="splash-title">LinguaPro</h1>
+  <p class="splash-sub">منصة تعلم اللغات الذكية</p>
+  <div class="splash-loader"></div>
+</div>
+
+<!-- Activation Screen -->
+<div id="activation" class="paywall hide">
+  <div class="paywall-content">
+    
+    <div id="actStep1" class="activation-step">
+      <div class="paywall-icon">🔐</div>
+      <h1>LinguaPro Premium</h1>
+      <p>تعلم اللغات بدون حدود - دفع لمرة واحدة</p>
+      
+      <div id="trialInfo" class="trial-info" style="display:none"></div>
+      
+      <div class="pricing-card">
+        <div class="pricing-badge">دفع لمرة واحدة</div>
+        <h2 class="pricing-title">LinguaPro Forever</h2>
+        <div class="pricing-price">
+          <span class="price-value">$9.99</span>
+          <span class="price-period">مرة واحدة فقط</span>
+        </div>
+        <ul class="pricing-features">
+          <li>✅ جميع الدروس (A1 → C1)</li>
+          <li>✅ تصحيح النطق بالذكاء الاصطناعي</li>
+          <li>✅ محادثات تفاعلية غير محدودة</li>
+          <li>✅ يعمل بدون إنترنت للأبد</li>
+          <li>✅ تحديثات مجانية مدى الحياة</li>
+          <li>✅ تفعيل على جهاز واحد</li>
+          <li>✅ <strong>لا رسوم شهرية</strong></li>
+        </ul>
+        
+        <div class="device-id-box">
+          <label>📱 Device ID جهازك:</label>
+          <div class="device-id" id="deviceIdDisplay">جاري التوليد...</div>
+          <button class="btn-copy-id" id="copyDeviceId">📋 نسخ Device ID</button>
+        </div>
+        
+        <button class="btn-whatsapp" id="whatsappBtn">
+          💬 إرسال Device ID على الواتساب
+        </button>
+      </div>
+      
+      <button class="btn-ghost-pw" id="haveCodeBtn">
+        🔑 لدي كود التفعيل
+      </button>
+    </div>
+    
+    <div id="actStep2" class="activation-step hide">
+      <div class="paywall-icon">🔑</div>
+      <h1>أدخل كود التفعيل</h1>
+      <p>الصق الكود الذي وصلك على الواتساب</p>
+      
+      <div class="device-id-box" style="background:rgba(255,255,255,.15)">
+        <label style="color:rgba(255,255,255,.9)">📱 Device ID جهازك:</label>
+        <div class="device-id" id="deviceIdDisplay2" style="background:rgba(0,0,0,.2);color:#fff;border-color:rgba(255,255,255,.5)">----</div>
+      </div>
+      
+      <input type="text" class="license-input" id="licenseInput" 
+             placeholder="LPX-XXXX-XXXX-XXXX" autocomplete="off" autocapitalize="characters">
+      
+      <div class="qf" id="licenseFeedback" style="margin-top:15px"></div>
+      
+      <div style="display:flex;gap:8px;margin-top:15px">
+        <button class="btn-ghost-pw" id="backStep1" style="flex:1">← رجوع</button>
+        <button class="btn btn-pro" id="activateBtn" style="flex:1">✓ تفعيل</button>
+      </div>
+      
+      <p style="color:rgba(255,255,255,.9);font-size:.85rem;margin-top:20px;line-height:1.8">
+        💡 لم تستلم الكود بعد؟<br>
+        <button class="link-btn" id="contactSellerBtn">تواصل مع البائع</button>
+      </p>
+    </div>
+    
+  </div>
+</div>
+
+<!-- Onboarding -->
+<div id="ob" class="ob hide">
+  <div class="ob-s" data-s="0">
+    <div class="ob-i">📚</div>
+    <h2>تعلم الإنجليزية والفرنسية</h2>
+    <p>من الصفر إلى الاحتراف مع منهج متدرج A1 → C1</p>
+  </div>
+  <div class="ob-s hide" data-s="1">
+    <div class="ob-i">🎤</div>
+    <h2>نطق ذكي بالذكاء الاصطناعي</h2>
+    <p>استمع وصحح نطقك بتقنية متقدمة</p>
+  </div>
+  <div class="ob-s hide" data-s="2">
+    <div class="ob-i">🏆</div>
+    <h2>نظام تحفيزي كامل</h2>
+    <p>نقاط، شارات، سلسلة أيام، ومستويات متدرجة</p>
+  </div>
+  <div class="ob-d">
+    <span class="dot active"></span>
+    <span class="dot"></span>
+    <span class="dot"></span>
+  </div>
+  <div class="ob-a">
+    <button class="btn bs" id="obSkip">تخطي</button>
+    <button class="btn bp" id="obNext">التالي</button>
+  </div>
+</div>
+
+<!-- App -->
+<div id="app" class="hide">
+  <header class="hd">
+    <div class="hd-c">
+      <div class="logo" id="logoBtn">🌍 LinguaPro</div>
+      <div class="stats">
+        <div class="st streak">🔥 <span id="sStreak">0</span></div>
+        <div class="st xp">⭐ <span id="sXp">0</span></div>
+        <div class="st gem">💎 <span id="sGem">0</span></div>
+        <div class="st lv">🏆 <span id="sLv">1</span></div>
+        <button class="ib" id="themeBtn">🌙</button>
+      </div>
+    </div>
+    <div class="gp"><div class="gpf" id="gpFill"></div></div>
+  </header>
+  <main class="mn" id="mn"></main>
+  <nav class="bn">
+    <button class="nb active" data-v="home"><span class="ni">🏠</span><span class="nl">الرئيسية</span></button>
+    <button class="nb" data-v="learn"><span class="ni">📚</span><span class="nl">تعلم</span></button>
+    <button class="nb" data-v="practice"><span class="ni">🎯</span><span class="nl">تدرب</span></button>
+    <button class="nb" data-v="progress"><span class="ni">📊</span><span class="nl">تقدمي</span></button>
+    <button class="nb" data-v="profile"><span class="ni">👤</span><span class="nl">حسابي</span></button>
+  </nav>
+</div>
+
+<div id="toast" class="ts"></div>
+<div id="modal" class="mo hide"><div class="md" id="modalBox"></div></div>
+<div id="confetti" class="cfc"></div>
+
+<script>
+// ==========================================================
+// LINGUAPRO v6.1 - كامل مع تفعيل لكل جهاز + تجربة 7 أيام
+// ==========================================================
+
+// ============ CONFIG ============
+const CONFIG = {
+  SECRET_KEY: 'LPX-2024-LINGUAPRO-SECRET-V1-DO-NOT-SHARE',
+  SELLER_WHATSAPP: '963938385157', // ← غيّر لرقمك
+  PRICE: '$9.99',
+  TRIAL_DAYS: 7,
+  WHATSAPP_MSG: 'السلام عليكم، أريد شراء LinguaPro Premium.\n\nDevice ID جهازي:'
+};
+
+// ============ DATABASE ============
+const DB = {
+en:{
+  name:'English',flag:'🇬🇧',voice:'en-US',
+  levels:{
+    A1:{name:'مبتدئ A1',courses:[
+      {id:'e_alpha',icon:'🔤',title:'الحروف',desc:'الحروف الـ26',items:[
+        {w:'A',p:'/eɪ/',e:'Apple',t:'تفاحة'},{w:'B',p:'/biː/',e:'Ball',t:'كرة'},
+        {w:'C',p:'/siː/',e:'Cat',t:'قطة'},{w:'D',p:'/diː/',e:'Dog',t:'كلب'},
+        {w:'E',p:'/iː/',e:'Egg',t:'بيضة'},{w:'F',p:'/ɛf/',e:'Fish',t:'سمكة'},
+        {w:'G',p:'/dʒiː/',e:'Girl',t:'فتاة'},{w:'H',p:'/eɪtʃ/',e:'House',t:'منزل'},
+        {w:'I',p:'/aɪ/',e:'Ice',t:'جليد'},{w:'J',p:'/dʒeɪ/',e:'Jam',t:'مربى'},
+        {w:'K',p:'/keɪ/',e:'King',t:'ملك'},{w:'L',p:'/ɛl/',e:'Lion',t:'أسد'},
+        {w:'M',p:'/ɛm/',e:'Moon',t:'قمر'},{w:'N',p:'/ɛn/',e:'Nose',t:'أنف'},
+        {w:'O',p:'/oʊ/',e:'Orange',t:'برتقال'},{w:'P',p:'/piː/',e:'Pen',t:'قلم'},
+        {w:'Q',p:'/kjuː/',e:'Queen',t:'ملكة'},{w:'R',p:'/ɑːr/',e:'Rain',t:'مطر'},
+        {w:'S',p:'/ɛs/',e:'Sun',t:'شمس'},{w:'T',p:'/tiː/',e:'Tree',t:'شجرة'},
+        {w:'U',p:'/juː/',e:'Umbrella',t:'مظلة'},{w:'V',p:'/viː/',e:'Van',t:'شاحنة'},
+        {w:'W',p:'/ˈdʌbəljuː/',e:'Water',t:'ماء'},{w:'X',p:'/ɛks/',e:'Box',t:'صندوق'},
+        {w:'Y',p:'/waɪ/',e:'Yellow',t:'أصفر'},{w:'Z',p:'/zɛd/',e:'Zebra',t:'حمار وحشي'}
+      ]},
+      {id:'e_num1',icon:'1️⃣',title:'الأرقام 1-20',desc:'الأرقام الأساسية',items:[
+        {w:'One',p:'/wʌn/',e:'One apple',t:'تفاحة واحدة'},
+        {w:'Two',p:'/tuː/',e:'Two cats',t:'قطتان'},
+        {w:'Three',p:'/θriː/',e:'Three books',t:'ثلاث كتب'},
+        {w:'Four',p:'/fɔːr/',e:'Four seasons',t:'أربعة فصول'},
+        {w:'Five',p:'/faɪv/',e:'Five fingers',t:'خمسة أصابع'},
+        {w:'Six',p:'/sɪks/',e:'Six eggs',t:'ست بيضات'},
+        {w:'Seven',p:'/ˈsevən/',e:'Seven days',t:'سبعة أيام'},
+        {w:'Eight',p:'/eɪt/',e:'Eight hours',t:'ثماني ساعات'},
+        {w:'Nine',p:'/naɪn/',e:'Nine students',t:'تسعة طلاب'},
+        {w:'Ten',p:'/tɛn/',e:'Ten dollars',t:'عشرة دولارات'},
+        {w:'Eleven',p:'/ɪˈlɛvən/',e:'Eleven players',t:'11 لاعباً'},
+        {w:'Twelve',p:'/twɛlv/',e:'Twelve months',t:'12 شهراً'},
+        {w:'Thirteen',p:'/ˌθɜːrˈtiːn/',e:'Thirteen years',t:'13 عاماً'},
+        {w:'Fourteen',p:'/ˌfɔːrˈtiːn/',e:'Fourteen days',t:'14 يوماً'},
+        {w:'Fifteen',p:'/ˌfɪfˈtiːn/',e:'Fifteen minutes',t:'15 دقيقة'},
+        {w:'Sixteen',p:'/ˌsɪksˈtiːn/',e:'Sixteen candles',t:'16 شمعة'},
+        {w:'Seventeen',p:'/ˌsevənˈtiːn/',e:'Seventeen cars',t:'17 سيارة'},
+        {w:'Eighteen',p:'/ˌeɪˈtiːn/',e:'Eighteen people',t:'18 شخصاً'},
+        {w:'Nineteen',p:'/ˌnaɪnˈtiːn/',e:'Nineteen books',t:'19 كتاباً'},
+        {w:'Twenty',p:'/ˈtwɛnti/',e:'Twenty students',t:'20 طالباً'}
+      ]},
+      {id:'e_num2',icon:'💯',title:'الأرقام 20-1000',desc:'العشرات والمئات',items:[
+        {w:'Thirty',p:'/ˈθɜːrti/',e:'Thirty days',t:'30 يوماً'},
+        {w:'Forty',p:'/ˈfɔːrti/',e:'Forty hours',t:'40 ساعة'},
+        {w:'Fifty',p:'/ˈfɪfti/',e:'Fifty dollars',t:'50 دولاراً'},
+        {w:'Sixty',p:'/ˈsɪksti/',e:'Sixty minutes',t:'60 دقيقة'},
+        {w:'Seventy',p:'/ˈsevənti/',e:'Seventy years',t:'70 عاماً'},
+        {w:'Eighty',p:'/ˈeɪti/',e:'Eighty percent',t:'80%'},
+        {w:'Ninety',p:'/ˈnaɪnti/',e:'Ninety nine',t:'99'},
+        {w:'Hundred',p:'/ˈhʌndrəd/',e:'One hundred',t:'100'},
+        {w:'Thousand',p:'/ˈθaʊzənd/',e:'One thousand',t:'1000'},
+        {w:'Million',p:'/ˈmɪljən/',e:'One million',t:'مليون'}
+      ]},
+      {id:'e_greet',icon:'👋',title:'التحيات',desc:'كلمات الترحيب',items:[
+        {w:'Hello',p:'/həˈloʊ/',e:'Hello! How are you?',t:'مرحباً! كيف حالك؟'},
+        {w:'Hi',p:'/haɪ/',e:'Hi! Nice to meet you',t:'أهلاً! سعيد بلقائك'},
+        {w:'Good morning',p:'/ɡʊd ˈmɔːrnɪŋ/',e:'Good morning!',t:'صباح الخير!'},
+        {w:'Good evening',p:'/ɡʊd ˈiːvnɪŋ/',e:'Good evening!',t:'مساء الخير!'},
+        {w:'Good night',p:'/ɡʊd naɪt/',e:'Good night',t:'تصبح على خير'},
+        {w:'Goodbye',p:'/ɡʊdˈbaɪ/',e:'Goodbye!',t:'وداعاً!'},
+        {w:'See you',p:'/siː juː/',e:'See you later!',t:'أراك لاحقاً!'},
+        {w:'Thank you',p:'/θæŋk juː/',e:'Thank you!',t:'شكراً!'},
+        {w:'Please',p:'/pliːz/',e:'Water please',t:'ماء لو سمحت'},
+        {w:'Sorry',p:'/ˈsɑːri/',e:'I am sorry',t:'أنا آسف'},
+        {w:'Excuse me',p:'/ɪkˈskjuːz miː/',e:'Excuse me',t:'عفواً'},
+        {w:'How are you?',p:'/haʊ ɑːr juː/',e:'How are you?',t:'كيف حالك؟'}
+      ]},
+      {id:'e_colors',icon:'🎨',title:'الألوان',desc:'جميع الألوان',items:[
+        {w:'Red',p:'/red/',e:'The rose is red',t:'الوردة حمراء'},
+        {w:'Blue',p:'/bluː/',e:'The sky is blue',t:'السماء زرقاء'},
+        {w:'Green',p:'/ɡriːn/',e:'The grass is green',t:'العشب أخضر'},
+        {w:'Yellow',p:'/ˈjeloʊ/',e:'The sun is yellow',t:'الشمس صفراء'},
+        {w:'Orange',p:'/ˈɔːrɪndʒ/',e:'Orange fruit',t:'فاكهة برتقالية'},
+        {w:'Purple',p:'/ˈpɜːrpəl/',e:'Purple flower',t:'زهرة بنفسجية'},
+        {w:'Pink',p:'/pɪŋk/',e:'Pink dress',t:'فستان وردي'},
+        {w:'Brown',p:'/braʊn/',e:'Brown bear',t:'دب بني'},
+        {w:'Black',p:'/blæk/',e:'Black cat',t:'قطة سوداء'},
+        {w:'White',p:'/waɪt/',e:'White snow',t:'ثلج أبيض'},
+        {w:'Gray',p:'/ɡreɪ/',e:'Gray sky',t:'سماء رمادية'},
+        {w:'Gold',p:'/ɡoʊld/',e:'Gold ring',t:'خاتم ذهبي'}
+      ]},
+      {id:'e_family',icon:'👨‍👩‍👧',title:'العائلة',desc:'أفراد العائلة',items:[
+        {w:'Father',p:'/ˈfɑːðər/',e:'My father works',t:'أبي يعمل'},
+        {w:'Mother',p:'/ˈmʌðər/',e:'My mother is a doctor',t:'أمي طبيبة'},
+        {w:'Brother',p:'/ˈbrʌðər/',e:'I have a brother',t:'لدي أخ'},
+        {w:'Sister',p:'/ˈsɪstər/',e:'My sister is young',t:'أختي صغيرة'},
+        {w:'Son',p:'/sʌn/',e:'He is my son',t:'هو ابني'},
+        {w:'Daughter',p:'/ˈdɔːtər/',e:'She is my daughter',t:'هي ابنتي'},
+        {w:'Grandfather',p:'/ˈɡrænfɑːðər/',e:'My grandfather',t:'جدي'},
+        {w:'Grandmother',p:'/ˈɡrænmʌðər/',e:'My grandmother',t:'جدتي'},
+        {w:'Uncle',p:'/ˈʌŋkəl/',e:'My uncle is kind',t:'عمي طيب'},
+        {w:'Aunt',p:'/ænt/',e:'My aunt lives here',t:'عمتي تسكن هنا'},
+        {w:'Cousin',p:'/ˈkʌzən/',e:'My cousin',t:'ابن عمي'},
+        {w:'Family',p:'/ˈfæməli/',e:'I love my family',t:'أحب عائلتي'}
+      ]},
+      {id:'e_body',icon:'👤',title:'أعضاء الجسم',desc:'أجزاء الجسم',items:[
+        {w:'Head',p:'/hɛd/',e:'My head hurts',t:'رأسي يؤلمني'},
+        {w:'Eye',p:'/aɪ/',e:'My eyes are blue',t:'عيوني زرقاء'},
+        {w:'Nose',p:'/noʊz/',e:'A small nose',t:'أنف صغير'},
+        {w:'Mouth',p:'/maʊθ/',e:'Open your mouth',t:'افتح فمك'},
+        {w:'Ear',p:'/ɪr/',e:'My ear hurts',t:'أذني تؤلمني'},
+        {w:'Hand',p:'/hænd/',e:'Wash your hands',t:'اغسل يديك'},
+        {w:'Foot',p:'/fʊt/',e:'My foot hurts',t:'قدمي تؤلمني'},
+        {w:'Arm',p:'/ɑːrm/',e:'My arm is long',t:'ذراعي طويلة'},
+        {w:'Leg',p:'/leɡ/',e:'My leg hurts',t:'ساقي تؤلمني'},
+        {w:'Hair',p:'/hɛr/',e:'Long black hair',t:'شعر أسود طويل'},
+        {w:'Face',p:'/feɪs/',e:'A beautiful face',t:'وجه جميل'},
+        {w:'Heart',p:'/hɑːrt/',e:'My heart beats',t:'قلبي ينبض'}
+      ]},
+      {id:'e_food',icon:'🍎',title:'الطعام',desc:'الأطعمة الأساسية',items:[
+        {w:'Bread',p:'/brɛd/',e:'Fresh bread',t:'خبز طازج'},
+        {w:'Water',p:'/ˈwɔːtər/',e:'Drink water',t:'اشرب الماء'},
+        {w:'Milk',p:'/mɪlk/',e:'A glass of milk',t:'كأس حليب'},
+        {w:'Rice',p:'/raɪs/',e:'White rice',t:'أرز أبيض'},
+        {w:'Meat',p:'/miːt/',e:'Red meat',t:'لحم أحمر'},
+        {w:'Chicken',p:'/ˈtʃɪkɪn/',e:'Fried chicken',t:'دجاج مقلي'},
+        {w:'Fish',p:'/fɪʃ/',e:'Fresh fish',t:'سمك طازج'},
+        {w:'Egg',p:'/ɛɡ/',e:'Two eggs',t:'بيضتان'},
+        {w:'Cheese',p:'/tʃiːz/',e:'Yellow cheese',t:'جبن أصفر'},
+        {w:'Apple',p:'/ˈæpəl/',e:'A red apple',t:'تفاحة حمراء'},
+        {w:'Coffee',p:'/ˈkɔːfi/',e:'Hot coffee',t:'قهوة ساخنة'},
+        {w:'Tea',p:'/tiː/',e:'Green tea',t:'شاي أخضر'}
+      ]},
+      {id:'e_verbs',icon:'⚡',title:'الأفعال الأساسية',desc:'أهم الأفعال',items:[
+        {w:'to be',p:'/tuː biː/',e:'I am happy',t:'أنا سعيد'},
+        {w:'to have',p:'/tuː hæv/',e:'I have a car',t:'لدي سيارة'},
+        {w:'to go',p:'/tuː ɡoʊ/',e:'I go to school',t:'أذهب للمدرسة'},
+        {w:'to come',p:'/tuː kʌm/',e:'Come here',t:'تعال هنا'},
+        {w:'to eat',p:'/tuː iːt/',e:'I eat bread',t:'آكل الخبز'},
+        {w:'to drink',p:'/tuː drɪŋk/',e:'I drink water',t:'أشرب الماء'},
+        {w:'to see',p:'/tuː siː/',e:'I see a bird',t:'أرى طائراً'},
+        {w:'to speak',p:'/tuː spiːk/',e:'I speak English',t:'أتحدث الإنجليزية'},
+        {w:'to read',p:'/tuː riːd/',e:'I read books',t:'أقرأ كتباً'},
+        {w:'to write',p:'/tuː raɪt/',e:'I write letters',t:'أكتب رسائل'},
+        {w:'to work',p:'/tuː wɜːrk/',e:'I work daily',t:'أعمل يومياً'},
+        {w:'to sleep',p:'/tuː sliːp/',e:'I sleep at night',t:'أنام ليلاً'}
+      ]},
+      {id:'e_pron',icon:'👥',title:'الضمائر',desc:'الضمائر الشخصية',items:[
+        {w:'I',p:'/aɪ/',e:'I am a student',t:'أنا طالب'},
+        {w:'You',p:'/juː/',e:'You are my friend',t:'أنت صديقي'},
+        {w:'He',p:'/hiː/',e:'He is a teacher',t:'هو معلم'},
+        {w:'She',p:'/ʃiː/',e:'She is a doctor',t:'هي طبيبة'},
+        {w:'It',p:'/ɪt/',e:'It is a cat',t:'إنها قطة'},
+        {w:'We',p:'/wiː/',e:'We are students',t:'نحن طلاب'},
+        {w:'They',p:'/ðeɪ/',e:'They are friends',t:'هم أصدقاء'},
+        {w:'My',p:'/maɪ/',e:'My book',t:'كتابي'},
+        {w:'Your',p:'/jʊr/',e:'Your car',t:'سيارتك'},
+        {w:'His',p:'/hɪz/',e:'His house',t:'منزله'},
+        {w:'Her',p:'/hɜːr/',e:'Her dress',t:'فستانها'},
+        {w:'Our',p:'/ˈaʊər/',e:'Our school',t:'مدرستنا'}
+      ]},
+      {id:'e_days',icon:'📅',title:'أيام الأسبوع',desc:'Les jours',items:[
+        {w:'Sunday',p:'/ˈsʌndeɪ/',e:'Sunday is first',t:'الأحد أول'},
+        {w:'Monday',p:'/ˈmʌndeɪ/',e:'I work on Monday',t:'أعمل الاثنين'},
+        {w:'Tuesday',p:'/ˈtuːzdeɪ/',e:'Tuesday is busy',t:'الثلاثاء مزدحم'},
+        {w:'Wednesday',p:'/ˈwɛnzdeɪ/',e:'Wednesday is middle',t:'الأربعاء'},
+        {w:'Thursday',p:'/ˈθɜːrzdeɪ/',e:'Thursday',t:'الخميس'},
+        {w:'Friday',p:'/ˈfraɪdeɪ/',e:'Friday is holiday',t:'الجمعة عطلة'},
+        {w:'Saturday',p:'/ˈsætərdeɪ/',e:'Saturday is weekend',t:'السبت'}
+      ]},
+      {id:'e_months',icon:'🗓️',title:'أشهر السنة',desc:'Les mois',items:[
+        {w:'January',p:'/ˈdʒænjueri/',e:'January is cold',t:'يناير بارد'},
+        {w:'February',p:'/ˈfebrueri/',e:'February is short',t:'فبراير قصير'},
+        {w:'March',p:'/mɑːrtʃ/',e:'March is spring',t:'مارس ربيع'},
+        {w:'April',p:'/ˈeɪprəl/',e:'April brings rain',t:'أبريل مطر'},
+        {w:'May',p:'/meɪ/',e:'May is beautiful',t:'مايو جميل'},
+        {w:'June',p:'/dʒuːn/',e:'June is hot',t:'يونيو حار'},
+        {w:'July',p:'/dʒʊˈlaɪ/',e:'July is summer',t:'يوليو صيف'},
+        {w:'August',p:'/ˈɔːɡəst/',e:'August is warm',t:'أغسطس دافئ'},
+        {w:'September',p:'/sepˈtembər/',e:'September starts',t:'سبتمبر'},
+        {w:'October',p:'/ɑːkˈtoʊbər/',e:'October is autumn',t:'أكتوبر خريف'},
+        {w:'November',p:'/noʊˈvembər/',e:'November is cool',t:'نوفمبر'},
+        {w:'December',p:'/dɪˈsembər/',e:'December is winter',t:'ديسمبر شتاء'}
+      ]},
+      {id:'e_house',icon:'🏠',title:'المنزل',desc:'أجزاء المنزل',items:[
+        {w:'House',p:'/haʊs/',e:'My house is big',t:'منزلي كبير'},
+        {w:'Room',p:'/ruːm/',e:'A clean room',t:'غرفة نظيفة'},
+        {w:'Kitchen',p:'/ˈkɪtʃɪn/',e:'The kitchen is small',t:'المطبخ صغير'},
+        {w:'Bedroom',p:'/ˈbɛdruːm/',e:'My bedroom',t:'غرفتي'},
+        {w:'Bathroom',p:'/ˈbæθruːm/',e:'The bathroom is clean',t:'الحمام نظيف'},
+        {w:'Door',p:'/dɔːr/',e:'Close the door',t:'أغلق الباب'},
+        {w:'Window',p:'/ˈwɪndoʊ/',e:'Open the window',t:'افتح النافذة'},
+        {w:'Table',p:'/ˈteɪbəl/',e:'The table is wooden',t:'الطاولة خشبية'},
+        {w:'Chair',p:'/tʃɛr/',e:'Sit on the chair',t:'اجلس'},
+        {w:'Bed',p:'/bɛd/',e:'The bed is soft',t:'السرير ناعم'},
+        {w:'Garden',p:'/ˈɡɑːrdən/',e:'A beautiful garden',t:'حديقة جميلة'}
+      ]},
+      {id:'e_school',icon:'🎓',title:'المدرسة',desc:'مفردات المدرسة',items:[
+        {w:'School',p:'/skuːl/',e:'I go to school',t:'أذهب للمدرسة'},
+        {w:'Teacher',p:'/ˈtiːtʃər/',e:'My teacher is kind',t:'معلمي طيب'},
+        {w:'Student',p:'/ˈstuːdənt/',e:'I am a student',t:'أنا طالب'},
+        {w:'Book',p:'/bʊk/',e:'This book is useful',t:'كتاب مفيد'},
+        {w:'Pen',p:'/pɛn/',e:'A blue pen',t:'قلم أزرق'},
+        {w:'Pencil',p:'/ˈpɛnsəl/',e:'A sharp pencil',t:'قلم رصاص'},
+        {w:'Notebook',p:'/ˈnoʊtbʊk/',e:'My notebook',t:'دفترى'},
+        {w:'Class',p:'/klæs/',e:'The class starts',t:'الحصة تبدأ'},
+        {w:'Lesson',p:'/ˈlɛsən/',e:'An easy lesson',t:'درس سهل'},
+        {w:'Homework',p:'/ˈhoʊmwɜːrk/',e:'Do your homework',t:'اعمل واجبك'},
+        {w:'Exam',p:'/ɪɡˈzæm/',e:'The exam is hard',t:'الاختبار صعب'},
+        {w:'Library',p:'/ˈlaɪbreri/',e:'The library is quiet',t:'المكتبة هادئة'}
+      ]},
+      {id:'e_nature',icon:'🌳',title:'الطبيعة',desc:'عناصر الطبيعة',items:[
+        {w:'Sun',p:'/sʌn/',e:'The sun is bright',t:'الشمس ساطعة'},
+        {w:'Moon',p:'/muːn/',e:'The moon is full',t:'القمر بدر'},
+        {w:'Star',p:'/stɑːr/',e:'Stars shine',t:'النجوم تلمع'},
+        {w:'Sky',p:'/skaɪ/',e:'The sky is clear',t:'السماء صافية'},
+        {w:'Sea',p:'/siː/',e:'The sea is blue',t:'البحر أزرق'},
+        {w:'Mountain',p:'/ˈmaʊntən/',e:'A high mountain',t:'جبل عالٍ'},
+        {w:'River',p:'/ˈrɪvər/',e:'A long river',t:'نهر طويل'},
+        {w:'Tree',p:'/triː/',e:'A green tree',t:'شجرة خضراء'},
+        {w:'Flower',p:'/ˈflaʊər/',e:'A red flower',t:'زهرة حمراء'},
+        {w:'Rain',p:'/reɪn/',e:'Heavy rain',t:'مطر غزير'},
+        {w:'Snow',p:'/snoʊ/',e:'White snow',t:'ثلج أبيض'},
+        {w:'Wind',p:'/wɪnd/',e:'Strong wind',t:'ريح قوية'}
+      ]}
+    ]},
+    A2:{name:'ما قبل المتوسط A2',courses:[
+      {id:'e2_routine',icon:'⏰',title:'الروتين اليومي',desc:'أنشطة يومية',items:[
+        {w:'wake up',p:'/weɪk ʌp/',e:'I wake up at 7 AM',t:'أستيقظ 7 ص'},
+        {w:'take a shower',p:'/teɪk ə ˈʃaʊər/',e:'I take a shower',t:'أستحم'},
+        {w:'have breakfast',p:'/hæv ˈbrekfəst/',e:'We have breakfast',t:'نتناول الإفطار'},
+        {w:'go to work',p:'/ɡoʊ tuː wɜːrk/',e:'She goes to work',t:'تذهب للعمل'},
+        {w:'have lunch',p:'/hæv lʌntʃ/',e:'I have lunch at noon',t:'أتناول الغداء'},
+        {w:'come back',p:'/kʌm bæk/',e:'He comes back home',t:'يعود'},
+        {w:'watch TV',p:'/wɑːtʃ ˌtiːˈviː/',e:'We watch TV',t:'نشاهد التلفاز'},
+        {w:'go to bed',p:'/ɡoʊ tuː bed/',e:'I go to bed at 11',t:'أنام 11'}
+      ]},
+      {id:'e2_food',icon:'🍽️',title:'في المطعم',desc:'مفردات المطعم',items:[
+        {w:'menu',p:'/ˈmenjuː/',e:'Can I see the menu?',t:'هل أرى القائمة؟'},
+        {w:'order',p:'/ˈɔːrdər/',e:'I want to order',t:'أريد أن أطلب'},
+        {w:'waiter',p:'/ˈweɪtər/',e:'The waiter is friendly',t:'النادل ودود'},
+        {w:'bill',p:'/bɪl/',e:'The bill please',t:'الفاتورة'},
+        {w:'delicious',p:'/dɪˈlɪʃəs/',e:'The food is delicious',t:'الطعام لذيذ'},
+        {w:'spicy',p:'/ˈspaɪsi/',e:'This dish is spicy',t:'هذا الطبق حار'},
+        {w:'vegetarian',p:'/ˌvedʒəˈteriən/',e:'I am vegetarian',t:'أنا نباتي'},
+        {w:'reservation',p:'/ˌrezərˈveɪʃn/',e:'I have a reservation',t:'لدي حجز'}
+      ]},
+      {id:'e2_shop',icon:'🛍️',title:'التسوق',desc:'مفردات التسوق',items:[
+        {w:'price',p:'/praɪs/',e:'What is the price?',t:'ما السعر؟'},
+        {w:'expensive',p:'/ɪkˈspensɪv/',e:'This is expensive',t:'هذا غالٍ'},
+        {w:'cheap',p:'/tʃiːp/',e:'That bag is cheap',t:'رخيصة'},
+        {w:'discount',p:'/ˈdɪskaʊnt/',e:'Is there a discount?',t:'هل هناك خصم؟'},
+        {w:'cash',p:'/kæʃ/',e:'I pay in cash',t:'أدفع نقداً'},
+        {w:'credit card',p:'/ˈkredɪt kɑːrd/',e:'Use a credit card',t:'بطاقة ائتمان'},
+        {w:'receipt',p:'/rɪˈsiːt/',e:'The receipt please',t:'الإيصال'}
+      ]},
+      {id:'e2_travel',icon:'✈️',title:'السفر',desc:'مفردات المطار',items:[
+        {w:'airport',p:'/ˈerpɔːrt/',e:'The airport is far',t:'المطار بعيد'},
+        {w:'ticket',p:'/ˈtɪkɪt/',e:'I bought a ticket',t:'اشتريت تذكرة'},
+        {w:'passport',p:'/ˈpæspɔːrt/',e:'Show your passport',t:'جوازك'},
+        {w:'luggage',p:'/ˈlʌɡɪdʒ/',e:'My luggage is heavy',t:'أمتعتي ثقيلة'},
+        {w:'flight',p:'/flaɪt/',e:'The flight is delayed',t:'الرحلة متأخرة'},
+        {w:'arrive',p:'/əˈraɪv/',e:'We arrive at 9 PM',t:'نصل 9 م'},
+        {w:'depart',p:'/dɪˈpɑːrt/',e:'The plane departs',t:'الطائرة تقلع'},
+        {w:'hotel',p:'/hoʊˈtɛl/',e:'Book a hotel',t:'احجز فندق'}
+      ]},
+      {id:'e2_weather',icon:'🌤️',title:'الطقس',desc:'مفردات الطقس',items:[
+        {w:'sunny',p:'/ˈsʌni/',e:'It is sunny today',t:'الجو مشمس'},
+        {w:'rainy',p:'/ˈreɪni/',e:'A rainy day',t:'يوم ممطر'},
+        {w:'cloudy',p:'/ˈklaʊdi/',e:'It is cloudy',t:'الجو غائم'},
+        {w:'windy',p:'/ˈwɪndi/',e:'It is windy',t:'عاصف'},
+        {w:'hot',p:'/hɑːt/',e:'It is hot today',t:'الجو حار'},
+        {w:'cold',p:'/koʊld/',e:'It is cold',t:'الجو بارد'},
+        {w:'warm',p:'/wɔːrm/',e:'A warm day',t:'يوم دافئ'},
+        {w:'snow',p:'/snoʊ/',e:'It snows in winter',t:'يتساقط ثلج'}
+      ]},
+      {id:'e2_health',icon:'🏥',title:'الصحة',desc:'مفردات طبية',items:[
+        {w:'doctor',p:'/ˈdɑːktər/',e:'See a doctor',t:'اذهب للطبيب'},
+        {w:'hospital',p:'/ˈhɑːspɪtəl/',e:'The hospital is near',t:'المستشفى قريب'},
+        {w:'medicine',p:'/ˈmedɪsɪn/',e:'Take medicine',t:'تناول الدواء'},
+        {w:'sick',p:'/sɪk/',e:'I feel sick',t:'أشعر بالمرض'},
+        {w:'pain',p:'/peɪn/',e:'I have pain',t:'عندي ألم'},
+        {w:'fever',p:'/ˈfiːvər/',e:'I have a fever',t:'عندي حمى'},
+        {w:'headache',p:'/ˈhedeɪk/',e:'A bad headache',t:'صداع شديد'}
+      ]},
+      {id:'e2_work',icon:'💼',title:'العمل',desc:'مفردات العمل',items:[
+        {w:'job',p:'/dʒɑːb/',e:'I have a job',t:'لدي وظيفة'},
+        {w:'office',p:'/ˈɔːfɪs/',e:'The office is big',t:'المكتب كبير'},
+        {w:'boss',p:'/bɔːs/',e:'My boss is nice',t:'مديري لطيف'},
+        {w:'meeting',p:'/ˈmiːtɪŋ/',e:'A meeting at 10',t:'اجتماع 10'},
+        {w:'salary',p:'/ˈsæləri/',e:'Good salary',t:'راتب جيد'},
+        {w:'colleague',p:'/ˈkɑːliːɡ/',e:'My colleague helps',t:'زميلي يساعد'},
+        {w:'company',p:'/ˈkʌmpəni/',e:'A large company',t:'شركة كبيرة'}
+      ]}
+    ]},
+    B1:{name:'متوسط B1',courses:[
+      {id:'e3_past',icon:'📖',title:'الماضي البسيط',desc:'الأفعال في الماضي',items:[
+        {w:'went',p:'/went/',e:'I went to Paris',t:'ذهبت لباريس'},
+        {w:'saw',p:'/sɔː/',e:'I saw a movie',t:'شاهدت فيلماً'},
+        {w:'ate',p:'/eɪt/',e:'She ate pizza',t:'أكلت بيتزا'},
+        {w:'bought',p:'/bɔːt/',e:'He bought a car',t:'اشترى سيارة'},
+        {w:'made',p:'/meɪd/',e:'They made a cake',t:'صنعوا كعكة'},
+        {w:'took',p:'/tʊk/',e:'I took photos',t:'التقطت صوراً'},
+        {w:'came',p:'/keɪm/',e:'She came late',t:'جاءت متأخرة'},
+        {w:'said',p:'/sed/',e:'He said hello',t:'قال مرحباً'}
+      ]},
+      {id:'e3_perfect',icon:'🎯',title:'المضارع التام',desc:'have/has + PP',items:[
+        {w:'have been',p:'/hæv biːn/',e:'I have been to London',t:'زرت لندن'},
+        {w:'have seen',p:'/hæv siːn/',e:'I have seen this film',t:'شاهدت الفيلم'},
+        {w:'have eaten',p:'/hæv ˈiːtn/',e:'Have you eaten?',t:'هل أكلت؟'},
+        {w:'have finished',p:'/hæv ˈfɪnɪʃt/',e:'I have finished',t:'أنهيت'},
+        {w:'has gone',p:'/hæz ɡɔːn/',e:'She has gone home',t:'ذهبت للمنزل'},
+        {w:'have lived',p:'/hæv lɪvd/',e:'I have lived here',t:'سكنت هنا'}
+      ]},
+      {id:'e3_op',icon:'💭',title:'التعبير عن الرأي',desc:'Opinions',items:[
+        {w:'I think',p:'/aɪ θɪŋk/',e:'I think it is good',t:'أعتقد جيدة'},
+        {w:'In my opinion',p:'/ɪn maɪ əˈpɪnjən/',e:'In my opinion',t:'في رأيي'},
+        {w:'I agree',p:'/aɪ əˈɡriː/',e:'I agree with you',t:'أوافقك'},
+        {w:'I disagree',p:'/aɪ ˌdɪsəˈɡriː/',e:'I disagree',t:'لا أوافق'},
+        {w:'I believe',p:'/aɪ bɪˈliːv/',e:'I believe in you',t:'أؤمن بك'},
+        {w:'I suggest',p:'/aɪ səɡˈdʒest/',e:'I suggest a break',t:'أقترح استراحة'}
+      ]},
+      {id:'e3_compare',icon:'⚖️',title:'المقارنة',desc:'Comparatives',items:[
+        {w:'bigger',p:'/ˈbɪɡər/',e:'Bigger than',t:'أكبر من'},
+        {w:'smaller',p:'/ˈsmɔːlər/',e:'Smaller than',t:'أصغر من'},
+        {w:'better',p:'/ˈbetər/',e:'Better than',t:'أفضل من'},
+        {w:'worse',p:'/wɜːrs/',e:'Worse than',t:'أسوأ من'},
+        {w:'the biggest',p:'/ðə ˈbɪɡɪst/',e:'The biggest',t:'الأكبر'},
+        {w:'the best',p:'/ðə best/',e:'The best',t:'الأفضل'}
+      ]},
+      {id:'e3_future',icon:'🔮',title:'المستقبل',desc:'Future',items:[
+        {w:'will go',p:'/wɪl ɡoʊ/',e:'I will go tomorrow',t:'سأذهب غداً'},
+        {w:'will see',p:'/wɪl siː/',e:'I will see you',t:'سأراك'},
+        {w:'going to',p:'/ˈɡoʊɪŋ tuː/',e:'I am going to study',t:'سأدرس'},
+        {w:'will be',p:'/wɪl biː/',e:'I will be there',t:'سأكون هناك'},
+        {w:'will have',p:'/wɪl hæv/',e:'I will have time',t:'سيكون لدي وقت'},
+        {w:'next week',p:'/nekst wiːk/',e:'Next week',t:'الأسبوع القادم'}
+      ]}
+    ]},
+    B2:{name:'متقدم B2',courses:[
+      {id:'e4_cond',icon:'🔀',title:'الجمل الشرطية',desc:'If Clauses',items:[
+        {w:'If I were',p:'/ɪf aɪ wɜːr/',e:'If I were rich',t:'لو كنت غنياً'},
+        {w:'If you had',p:'/ɪf juː hæd/',e:'If you had studied',t:'لو درست'},
+        {w:'If I had known',p:'/ɪf aɪ hæd noʊn/',e:'If I had known',t:'لو كنت أعلم'},
+        {w:'Unless',p:'/ənˈles/',e:'Unless you hurry',t:'إن لم تسرع'},
+        {w:'Provided that',p:'/prəˈvaɪdɪd ðæt/',e:'Provided that',t:'شريطة أن'}
+      ]},
+      {id:'e4_passive',icon:'🔄',title:'المبني للمجهول',desc:'Passive',items:[
+        {w:'was built',p:'/wʌz bɪlt/',e:'The house was built',t:'بُني المنزل'},
+        {w:'is spoken',p:'/ɪz ˈspoʊkən/',e:'English is spoken',t:'الإنجليزية'},
+        {w:'has been done',p:'/hæz biːn dʌn/',e:'The work has been done',t:'تم العمل'},
+        {w:'will be sent',p:'/wɪl biː sent/',e:'It will be sent',t:'سيُرسل'},
+        {w:'was written',p:'/wʌz ˈrɪtn/',e:'The book was written',t:'كُتب الكتاب'}
+      ]},
+      {id:'e4_idiom',icon:'🎭',title:'التعبيرات الاصطلاحية',desc:'Idioms',items:[
+        {w:'break the ice',p:'/breɪk ði aɪs/',e:'Break the ice',t:'كسر الجليد'},
+        {w:'piece of cake',p:'/piːs əv keɪk/',e:'It is a piece of cake',t:'سهل جداً'},
+        {w:'hit the books',p:'/hɪt ðə bʊks/',e:'Hit the books',t:'ادرس بجد'},
+        {w:'under the weather',p:'/ˈʌndər ðə ˈweðər/',e:'I feel under the weather',t:'أشعر بتعب'},
+        {w:'cost an arm',p:'/kɔːst ən ɑːrm/',e:'It cost an arm',t:'غالي جداً'},
+        {w:'once in a blue moon',p:'/wʌns ɪn ə bluː muːn/',e:'Once in a blue moon',t:'نادراً'}
+      ]}
+    ]},
+    C1:{name:'متقدم C1',courses:[
+      {id:'e5_phrasal',icon:'💫',title:'الأفعال المركبة',desc:'Phrasal Verbs',items:[
+        {w:'give up',p:'/ɡɪv ʌp/',e:'Give up smoking',t:'توقف عن التدخين'},
+        {w:'put off',p:'/pʊt ɔːf/',e:'Put off the meeting',t:'أجّل الاجتماع'},
+        {w:'look after',p:'/lʊk ˈæftər/',e:'Look after the kids',t:'اعتنِ بالأطفال'},
+        {w:'come across',p:'/kʌm əˈkrɔːs/',e:'Come across a word',t:'صادف كلمة'},
+        {w:'get along',p:'/ɡet əˈlɔːŋ/',e:'Get along well',t:'على وفاق'},
+        {w:'take off',p:'/teɪk ɔːf/',e:'Take off your coat',t:'اخلع معطفك'},
+        {w:'turn down',p:'/tɜːrn daʊn/',e:'Turn down the offer',t:'ارفض العرض'},
+        {w:'bring up',p:'/brɪŋ ʌp/',e:'Bring up a topic',t:'طرح موضوعاً'}
+      ]},
+      {id:'e5_academic',icon:'🎓',title:'المفردات الأكاديمية',desc:'Academic',items:[
+        {w:'analyze',p:'/ˈænəlaɪz/',e:'Analyze the data',t:'تحليل البيانات'},
+        {w:'approach',p:'/əˈproʊtʃ/',e:'A new approach',t:'نهج جديد'},
+        {w:'concept',p:'/ˈkɑːnsept/',e:'A key concept',t:'مفهوم أساسي'},
+        {w:'significant',p:'/sɪɡˈnɪfɪkənt/',e:'Significant change',t:'تغيير مهم'},
+        {w:'hypothesis',p:'/haɪˈpɑːθəsɪs/',e:'Test a hypothesis',t:'اختبار فرضية'},
+        {w:'methodology',p:'/ˌmeθəˈdɑːlədʒi/',e:'Research methodology',t:'منهجية'},
+        {w:'conclusion',p:'/kənˈkluːʒn/',e:'In conclusion',t:'في الختام'},
+        {w:'evidence',p:'/ˈevɪdəns/',e:'Strong evidence',t:'دليل قوي'}
+      ]}
+    ]}
+  },
+  conversations:[
+    {id:'c_rest',icon:'🍽️',title:'في المطعم',lines:[
+      {s:'Waiter',text:'Good evening! Welcome.',tr:'مساء الخير! مرحباً.'},
+      {s:'You',text:'Thank you. A table for two.',tr:'شكراً. طاولة لشخصين.'},
+      {s:'Waiter',text:'This way please.',tr:'من هنا لو سمحت.'},
+      {s:'You',text:'Can I see the menu?',tr:'هل أرى القائمة؟'},
+      {s:'Waiter',text:'Here you are.',tr:'تفضل.'},
+      {s:'You',text:'Water please.',tr:'ماء لو سمحت.'}
+    ]},
+    {id:'c_air',icon:'✈️',title:'في المطار',lines:[
+      {s:'Officer',text:'Your passport, please.',tr:'جوازك لو سمحت.'},
+      {s:'You',text:'Here it is.',tr:'تفضل.'},
+      {s:'Officer',text:'Purpose of visit?',tr:'الغرض من الزيارة؟'},
+      {s:'You',text:'Tourism.',tr:'السياحة.'},
+      {s:'Officer',text:'How long will you stay?',tr:'كم ستبقى؟'},
+      {s:'You',text:'Two weeks.',tr:'أسبوعان.'}
+    ]},
+    {id:'c_shop',icon:'🛍️',title:'في المتجر',lines:[
+      {s:'Seller',text:'Can I help you?',tr:'هل أساعدك؟'},
+      {s:'You',text:'Yes, I want a shirt.',tr:'نعم، أريد قميصاً.'},
+      {s:'Seller',text:'What size?',tr:'ما المقاس؟'},
+      {s:'You',text:'Medium please.',tr:'متوسط لو سمحت.'},
+      {s:'Seller',text:'Here you are.',tr:'تفضل.'},
+      {s:'You',text:'How much?',tr:'كم الثمن؟'}
+    ]}
+  ]
+},
+fr:{
+  name:'Français',flag:'🇫🇷',voice:'fr-FR',
+  levels:{
+    A1:{name:'مبتدئ A1',courses:[
+      {id:'f_alpha',icon:'🔤',title:'الأبجدية',desc:'الحروف الفرنسية',items:[
+        {w:'A',p:'/a/',e:'Avion',t:'طائرة'},{w:'B',p:'/be/',e:'Ballon',t:'كرة'},
+        {w:'C',p:'/se/',e:'Chat',t:'قط'},{w:'D',p:'/de/',e:'Dauphin',t:'دلفين'},
+        {w:'E',p:'/ə/',e:'École',t:'مدرسة'},{w:'F',p:'/ɛf/',e:'Fleur',t:'زهرة'},
+        {w:'G',p:'/ʒe/',e:'Gâteau',t:'كعكة'},{w:'H',p:'/aʃ/',e:'Hôtel',t:'فندق'},
+        {w:'I',p:'/i/',e:'Île',t:'جزيرة'},{w:'J',p:'/ʒi/',e:'Jardin',t:'حديقة'},
+        {w:'K',p:'/ka/',e:'Kiwi',t:'كيوي'},{w:'L',p:'/ɛl/',e:'Lune',t:'قمر'},
+        {w:'M',p:'/ɛm/',e:'Maison',t:'منزل'},{w:'N',p:'/ɛn/',e:'Nuage',t:'سحابة'},
+        {w:'O',p:'/o/',e:'Orange',t:'برتقال'},{w:'P',p:'/pe/',e:'Pomme',t:'تفاحة'},
+        {w:'Q',p:'/ky/',e:'Quatre',t:'أربعة'},{w:'R',p:'/ɛʁ/',e:'Rose',t:'وردة'},
+        {w:'S',p:'/ɛs/',e:'Soleil',t:'شمس'},{w:'T',p:'/te/',e:'Table',t:'طاولة'},
+        {w:'U',p:'/y/',e:'Univers',t:'كون'},{w:'V',p:'/ve/',e:'Voiture',t:'سيارة'},
+        {w:'W',p:'/dubləve/',e:'Wagon',t:'عربة'},{w:'X',p:'/iks/',e:'Xylophone',t:'زيلوفون'},
+        {w:'Y',p:'/iɡʁɛk/',e:'Yaourt',t:'زبادي'},{w:'Z',p:'/zɛd/',e:'Zèbre',t:'حمار وحشي'}
+      ]},
+      {id:'f_num1',icon:'1️⃣',title:'الأرقام 1-20',desc:'الأرقام الفرنسية',items:[
+        {w:'Un',p:'/œ̃/',e:'Un livre',t:'كتاب واحد'},
+        {w:'Deux',p:'/dø/',e:'Deux chats',t:'قطتان'},
+        {w:'Trois',p:'/tʁwa/',e:'Trois pommes',t:'ثلاث تفاحات'},
+        {w:'Quatre',p:'/katʁ/',e:'Quatre saisons',t:'أربعة فصول'},
+        {w:'Cinq',p:'/sɛ̃k/',e:'Cinq doigts',t:'خمسة أصابع'},
+        {w:'Six',p:'/sis/',e:'Six œufs',t:'ست بيضات'},
+        {w:'Sept',p:'/sɛt/',e:'Sept jours',t:'سبعة أيام'},
+        {w:'Huit',p:'/ɥit/',e:'Huit heures',t:'ثماني ساعات'},
+        {w:'Neuf',p:'/nœf/',e:'Neuf étudiants',t:'تسعة طلاب'},
+        {w:'Dix',p:'/dis/',e:'Dix euros',t:'عشرة يورو'},
+        {w:'Onze',p:'/ɔ̃z/',e:'Onze joueurs',t:'11 لاعباً'},
+        {w:'Douze',p:'/duz/',e:'Douze mois',t:'12 شهراً'},
+        {w:'Treize',p:'/tʁɛz/',e:'Treize ans',t:'13 عاماً'},
+        {w:'Quatorze',p:'/katɔʁz/',e:'Quatorze jours',t:'14 يوماً'},
+        {w:'Quinze',p:'/kɛ̃z/',e:'Quinze minutes',t:'15 دقيقة'},
+        {w:'Seize',p:'/sɛz/',e:'Seize bougies',t:'16 شمعة'},
+        {w:'Dix-sept',p:'/dissɛt/',e:'Dix-sept voitures',t:'17 سيارة'},
+        {w:'Dix-huit',p:'/dizɥit/',e:'Dix-huit personnes',t:'18 شخصاً'},
+        {w:'Dix-neuf',p:'/diznœf/',e:'Dix-neuf livres',t:'19 كتاباً'},
+        {w:'Vingt',p:'/vɛ̃/',e:'Vingt étudiants',t:'20 طالباً'}
+      ]},
+      {id:'f_num2',icon:'💯',title:'الأرقام 20-1000',desc:'العشرات والمئات',items:[
+        {w:'Trente',p:'/tʁɑ̃t/',e:'Trente jours',t:'30 يوماً'},
+        {w:'Quarante',p:'/kaʁɑ̃t/',e:'Quarante heures',t:'40 ساعة'},
+        {w:'Cinquante',p:'/sɛ̃kɑ̃t/',e:'Cinquante euros',t:'50 يورو'},
+        {w:'Soixante',p:'/swasɑ̃t/',e:'Soixante minutes',t:'60 دقيقة'},
+        {w:'Soixante-dix',p:'/swasɑ̃tdis/',e:'Soixante-dix ans',t:'70 عاماً'},
+        {w:'Quatre-vingts',p:'/katʁəvɛ̃/',e:'Quatre-vingts',t:'80'},
+        {w:'Quatre-vingt-dix',p:'/katʁəvɛ̃dis/',e:'Quatre-vingt-dix',t:'90'},
+        {w:'Cent',p:'/sɑ̃/',e:'Cent euros',t:'100'},
+        {w:'Mille',p:'/mil/',e:'Mille personnes',t:'1000'},
+        {w:'Un million',p:'/œ̃ miljɔ̃/',e:'Un million',t:'مليون'}
+      ]},
+      {id:'f_greet',icon:'👋',title:'التحيات',desc:'التحيات الفرنسية',items:[
+        {w:'Bonjour',p:'/bɔ̃ʒuʁ/',e:'Bonjour!',t:'مرحباً!'},
+        {w:'Bonsoir',p:'/bɔ̃swaʁ/',e:'Bonsoir!',t:'مساء الخير!'},
+        {w:'Bonne nuit',p:'/bɔn nɥi/',e:'Bonne nuit',t:'تصبح على خير'},
+        {w:'Au revoir',p:'/o ʁəvwaʁ/',e:'Au revoir!',t:'وداعاً!'},
+        {w:'Salut',p:'/saly/',e:'Salut!',t:'أهلاً!'},
+        {w:'Merci',p:'/mɛʁsi/',e:'Merci!',t:'شكراً!'},
+        {w:'Merci beaucoup',p:'/mɛʁsi boku/',e:'Merci beaucoup',t:'شكراً جزيلاً'},
+        {w:'De rien',p:'/də ʁjɛ̃/',e:'De rien',t:'على الرحب'},
+        {w:'S\'il vous plaît',p:'/sil vu plɛ/',e:'De l\'eau svp',t:'ماء لو سمحت'},
+        {w:'Pardon',p:'/paʁdɔ̃/',e:'Pardon!',t:'عفواً!'},
+        {w:'Comment ça va?',p:'/kɔmɑ̃ sa va/',e:'Comment ça va?',t:'كيف حالك؟'},
+        {w:'Enchanté',p:'/ɑ̃ʃɑ̃te/',e:'Enchanté!',t:'تشرفنا!'}
+      ]},
+      {id:'f_colors',icon:'🎨',title:'الألوان',desc:'الألوان الأساسية',items:[
+        {w:'Rouge',p:'/ʁuʒ/',e:'La rose rouge',t:'الوردة الحمراء'},
+        {w:'Bleu',p:'/blø/',e:'Le ciel bleu',t:'السماء الزرقاء'},
+        {w:'Vert',p:'/vɛʁ/',e:'Herbe verte',t:'عشب أخضر'},
+        {w:'Jaune',p:'/ʒon/',e:'Soleil jaune',t:'شمس صفراء'},
+        {w:'Orange',p:'/ɔʁɑ̃ʒ/',e:'Fruit orange',t:'فاكهة برتقالية'},
+        {w:'Violet',p:'/vjɔlɛ/',e:'Fleur violette',t:'زهرة بنفسجية'},
+        {w:'Rose',p:'/ʁoz/',e:'Robe rose',t:'فستان وردي'},
+        {w:'Marron',p:'/maʁɔ̃/',e:'Ours marron',t:'دب بني'},
+        {w:'Noir',p:'/nwaʁ/',e:'Chat noir',t:'قطة سوداء'},
+        {w:'Blanc',p:'/blɑ̃/',e:'Neige blanche',t:'ثلج أبيض'},
+        {w:'Gris',p:'/ɡʁi/',e:'Ciel gris',t:'سماء رمادية'},
+        {w:'Or',p:'/ɔʁ/',e:'Bijou en or',t:'جوهرة ذهبية'}
+      ]},
+      {id:'f_family',icon:'👨‍👩‍👧',title:'العائلة',desc:'أفراد العائلة',items:[
+        {w:'Père',p:'/pɛʁ/',e:'Mon père travaille',t:'أبي يعمل'},
+        {w:'Mère',p:'/mɛʁ/',e:'Ma mère est médecin',t:'أمي طبيبة'},
+        {w:'Frère',p:'/fʁɛʁ/',e:'J\'ai un frère',t:'لدي أخ'},
+        {w:'Sœur',p:'/sœʁ/',e:'Ma sœur est jeune',t:'أختي صغيرة'},
+        {w:'Fils',p:'/fis/',e:'C\'est mon fils',t:'هذا ابني'},
+        {w:'Fille',p:'/fij/',e:'C\'est ma fille',t:'هذه ابنتي'},
+        {w:'Grand-père',p:'/ɡʁɑ̃pɛʁ/',e:'Mon grand-père',t:'جدي'},
+        {w:'Grand-mère',p:'/ɡʁɑ̃mɛʁ/',e:'Ma grand-mère',t:'جدتي'},
+        {w:'Oncle',p:'/ɔ̃kl/',e:'Mon oncle',t:'عمي'},
+        {w:'Tante',p:'/tɑ̃t/',e:'Ma tante',t:'عمتي'},
+        {w:'Cousin',p:'/kuzɛ̃/',e:'Mon cousin',t:'ابن عمي'},
+        {w:'Famille',p:'/famij/',e:'J\'aime ma famille',t:'أحب عائلتي'}
+      ]},
+      {id:'f_body',icon:'👤',title:'أعضاء الجسم',desc:'أجزاء الجسم',items:[
+        {w:'Tête',p:'/tɛt/',e:'Ma tête me fait mal',t:'رأسي يؤلمني'},
+        {w:'Œil',p:'/œj/',e:'Mes yeux sont bleus',t:'عيوني زرقاء'},
+        {w:'Nez',p:'/ne/',e:'Un petit nez',t:'أنف صغير'},
+        {w:'Bouche',p:'/buʃ/',e:'Ouvre la bouche',t:'افتح فمك'},
+        {w:'Oreille',p:'/ɔʁɛj/',e:'Mon oreille',t:'أذني'},
+        {w:'Main',p:'/mɛ̃/',e:'Lave tes mains',t:'اغسل يديك'},
+        {w:'Pied',p:'/pje/',e:'Mon pied',t:'قدمي'},
+        {w:'Bras',p:'/bʁa/',e:'Mon bras',t:'ذراعي'},
+        {w:'Jambe',p:'/ʒɑ̃b/',e:'Ma jambe',t:'ساقي'},
+        {w:'Cheveux',p:'/ʃəvø/',e:'Cheveux noirs',t:'شعر أسود'},
+        {w:'Visage',p:'/vizaʒ/',e:'Beau visage',t:'وجه جميل'},
+        {w:'Cœur',p:'/kœʁ/',e:'Mon cœur bat',t:'قلبي ينبض'}
+      ]},
+      {id:'f_food',icon:'🍎',title:'الطعام',desc:'الأطعمة',items:[
+        {w:'Pain',p:'/pɛ̃/',e:'Pain frais',t:'خبز طازج'},
+        {w:'Eau',p:'/o/',e:'Boire de l\'eau',t:'اشرب الماء'},
+        {w:'Lait',p:'/lɛ/',e:'Un verre de lait',t:'كأس حليب'},
+        {w:'Riz',p:'/ʁi/',e:'Riz blanc',t:'أرز أبيض'},
+        {w:'Viande',p:'/vjɑ̃d/',e:'Viande rouge',t:'لحم أحمر'},
+        {w:'Poulet',p:'/pulɛ/',e:'Poulet rôti',t:'دجاج مشوي'},
+        {w:'Poisson',p:'/pwasɔ̃/',e:'Poisson frais',t:'سمك طازج'},
+        {w:'Œuf',p:'/œf/',e:'Deux œufs',t:'بيضتان'},
+        {w:'Fromage',p:'/fʁɔmaʒ/',e:'Fromage jaune',t:'جبن أصفر'},
+        {w:'Pomme',p:'/pɔm/',e:'Pomme rouge',t:'تفاحة حمراء'},
+        {w:'Café',p:'/kafe/',e:'Café chaud',t:'قهوة ساخنة'},
+        {w:'Thé',p:'/te/',e:'Thé vert',t:'شاي أخضر'}
+      ]},
+      {id:'f_verbs',icon:'⚡',title:'الأفعال الأساسية',desc:'أهم الأفعال',items:[
+        {w:'être',p:'/ɛtʁ/',e:'Je suis heureux',t:'أنا سعيد'},
+        {w:'avoir',p:'/avwaʁ/',e:'J\'ai une voiture',t:'لدي سيارة'},
+        {w:'aller',p:'/ale/',e:'Je vais à l\'école',t:'أذهب للمدرسة'},
+        {w:'venir',p:'/vəniʁ/',e:'Viens ici',t:'تعال هنا'},
+        {w:'manger',p:'/mɑ̃ʒe/',e:'Je mange du pain',t:'آكل الخبز'},
+        {w:'boire',p:'/bwaʁ/',e:'Je bois de l\'eau',t:'أشرب الماء'},
+        {w:'voir',p:'/vwaʁ/',e:'Je vois un oiseau',t:'أرى طائراً'},
+        {w:'parler',p:'/paʁle/',e:'Je parle français',t:'أتحدث الفرنسية'},
+        {w:'lire',p:'/liʁ/',e:'Je lis un livre',t:'أقرأ كتاباً'},
+        {w:'écrire',p:'/ekʁiʁ/',e:'J\'écris une lettre',t:'أكتب رسالة'},
+        {w:'travailler',p:'/tʁavaje/',e:'Je travaille',t:'أعمل'},
+        {w:'dormir',p:'/dɔʁmiʁ/',e:'Je dors la nuit',t:'أنام ليلاً'}
+      ]},
+      {id:'f_pron',icon:'👥',title:'الضمائر',desc:'الضمائر الفرنسية',items:[
+        {w:'Je',p:'/ʒə/',e:'Je suis étudiant',t:'أنا طالب'},
+        {w:'Tu',p:'/ty/',e:'Tu es mon ami',t:'أنت صديقي'},
+        {w:'Il',p:'/il/',e:'Il est professeur',t:'هو معلم'},
+        {w:'Elle',p:'/ɛl/',e:'Elle est médecin',t:'هي طبيبة'},
+        {w:'Nous',p:'/nu/',e:'Nous sommes étudiants',t:'نحن طلاب'},
+        {w:'Vous',p:'/vu/',e:'Vous êtes amis',t:'أنتم أصدقاء'},
+        {w:'Ils',p:'/il/',e:'Ils sont amis',t:'هم أصدقاء'},
+        {w:'Elles',p:'/ɛl/',e:'Elles sont amies',t:'هن صديقات'},
+        {w:'Mon',p:'/mɔ̃/',e:'Mon livre',t:'كتابي'},
+        {w:'Ton',p:'/tɔ̃/',e:'Ton stylo',t:'قلمك'},
+        {w:'Son',p:'/sɔ̃/',e:'Sa maison',t:'منزله'},
+        {w:'Notre',p:'/nɔtʁ/',e:'Notre école',t:'مدرستنا'}
+      ]},
+      {id:'f_days',icon:'📅',title:'أيام الأسبوع',desc:'Les jours',items:[
+        {w:'Lundi',p:'/lœ̃di/',e:'Lundi je travaille',t:'الاثنين أعمل'},
+        {w:'Mardi',p:'/maʁdi/',e:'Mardi est occupé',t:'الثلاثاء مزدحم'},
+        {w:'Mercredi',p:'/mɛʁkʁədi/',e:'Mercredi',t:'الأربعاء'},
+        {w:'Jeudi',p:'/ʒødi/',e:'Jeudi',t:'الخميس'},
+        {w:'Vendredi',p:'/vɑ̃dʁədi/',e:'Vendredi',t:'الجمعة'},
+        {w:'Samedi',p:'/samdi/',e:'Samedi est libre',t:'السبت حر'},
+        {w:'Dimanche',p:'/dimɑ̃ʃ/',e:'Dimanche repose',t:'الأحد راحة'}
+      ]},
+      {id:'f_months',icon:'🗓️',title:'أشهر السنة',desc:'Les mois',items:[
+        {w:'Janvier',p:'/ʒɑ̃vje/',e:'Janvier est froid',t:'يناير بارد'},
+        {w:'Février',p:'/fevʁije/',e:'Février est court',t:'فبراير قصير'},
+        {w:'Mars',p:'/maʁs/',e:'Mars est printemps',t:'مارس ربيع'},
+        {w:'Avril',p:'/avʁil/',e:'Avril apporte la pluie',t:'أبريل مطر'},
+        {w:'Mai',p:'/mɛ/',e:'Mai est beau',t:'مايو جميل'},
+        {w:'Juin',p:'/ʒɥɛ̃/',e:'Juin est chaud',t:'يونيو حار'},
+        {w:'Juillet',p:'/ʒɥijɛ/',e:'Juillet est l\'été',t:'يوليو صيف'},
+        {w:'Août',p:'/u/',e:'Août est chaud',t:'أغسطس حار'},
+        {w:'Septembre',p:'/sɛptɑ̃bʁ/',e:'Septembre rentrée',t:'سبتمبر'},
+        {w:'Octobre',p:'/ɔktɔbʁ/',e:'Octobre est l\'automne',t:'أكتوبر خريف'},
+        {w:'Novembre',p:'/nɔvɑ̃bʁ/',e:'Novembre est frais',t:'نوفمبر'},
+        {w:'Décembre',p:'/desɑ̃bʁ/',e:'Décembre est l\'hiver',t:'ديسمبر شتاء'}
+      ]},
+      {id:'f_house',icon:'🏠',title:'المنزل',desc:'La maison',items:[
+        {w:'Maison',p:'/mɛzɔ̃/',e:'Ma maison est grande',t:'منزلي كبير'},
+        {w:'Chambre',p:'/ʃɑ̃bʁ/',e:'Une chambre propre',t:'غرفة نظيفة'},
+        {w:'Cuisine',p:'/kɥizin/',e:'La cuisine est petite',t:'المطبخ صغير'},
+        {w:'Salle de bain',p:'/sal də bɛ̃/',e:'La salle de bain',t:'الحمام'},
+        {w:'Salon',p:'/salɔ̃/',e:'Le salon est grand',t:'غرفة المعيشة'},
+        {w:'Porte',p:'/pɔʁt/',e:'Ferme la porte',t:'أغلق الباب'},
+        {w:'Fenêtre',p:'/fənɛtʁ/',e:'Ouvre la fenêtre',t:'افتح النافذة'},
+        {w:'Table',p:'/tabl/',e:'Table en bois',t:'طاولة خشبية'},
+        {w:'Chaise',p:'/ʃɛz/',e:'Chaise',t:'كرسي'},
+        {w:'Lit',p:'/li/',e:'Le lit est doux',t:'السرير ناعم'},
+        {w:'Jardin',p:'/ʒaʁdɛ̃/',e:'Jardin magnifique',t:'حديقة رائعة'}
+      ]},
+      {id:'f_school',icon:'🎓',title:'المدرسة',desc:'L\'école',items:[
+        {w:'École',p:'/ekɔl/',e:'Je vais à l\'école',t:'أذهب للمدرسة'},
+        {w:'Professeur',p:'/pʁɔfɛsœʁ/',e:'Mon professeur est gentil',t:'معلمي لطيف'},
+        {w:'Étudiant',p:'/etydjɑ̃/',e:'Je suis étudiant',t:'أنا طالب'},
+        {w:'Livre',p:'/livʁ/',e:'Un livre utile',t:'كتاب مفيد'},
+        {w:'Stylo',p:'/stilo/',e:'Un stylo bleu',t:'قلم أزرق'},
+        {w:'Crayon',p:'/kʁɛjɔ̃/',e:'Un crayon',t:'قلم رصاص'},
+        {w:'Cahier',p:'/kaje/',e:'Mon cahier',t:'دفترى'},
+        {w:'Classe',p:'/klas/',e:'La classe commence',t:'الحصة تبدأ'},
+        {w:'Leçon',p:'/ləsɔ̃/',e:'Une leçon facile',t:'درس سهل'},
+        {w:'Devoirs',p:'/dəvwaʁ/',e:'Fais tes devoirs',t:'اعمل واجبك'},
+        {w:'Examen',p:'/ɛɡzamɛ̃/',e:'L\'examen est dur',t:'الاختبار صعب'},
+        {w:'Bibliothèque',p:'/biblijɔtɛk/',e:'La bibliothèque',t:'المكتبة'}
+      ]},
+      {id:'f_nature',icon:'🌳',title:'الطبيعة',desc:'La nature',items:[
+        {w:'Soleil',p:'/sɔlɛj/',e:'Le soleil brille',t:'الشمس ساطعة'},
+        {w:'Lune',p:'/lyn/',e:'La lune est pleine',t:'القمر بدر'},
+        {w:'Étoile',p:'/etwal/',e:'Les étoiles brillent',t:'النجوم تلمع'},
+        {w:'Ciel',p:'/sjɛl/',e:'Le ciel est clair',t:'السماء صافية'},
+        {w:'Mer',p:'/mɛʁ/',e:'La mer est bleue',t:'البحر أزرق'},
+        {w:'Montagne',p:'/mɔ̃taɲ/',e:'Haute montagne',t:'جبل عالٍ'},
+        {w:'Rivière',p:'/ʁivjɛʁ/',e:'Longue rivière',t:'نهر طويل'},
+        {w:'Arbre',p:'/aʁbʁ/',e:'Arbre vert',t:'شجرة خضراء'},
+        {w:'Fleur',p:'/flœʁ/',e:'Fleur rouge',t:'زهرة حمراء'},
+        {w:'Pluie',p:'/plɥi/',e:'Forte pluie',t:'مطر غزير'},
+        {w:'Neige',p:'/nɛʒ/',e:'Neige blanche',t:'ثلج أبيض'},
+        {w:'Vent',p:'/vɑ̃/',e:'Vent fort',t:'ريح قوية'}
+      ]}
+    ]},
+    A2:{name:'ما قبل المتوسط A2',courses:[
+      {id:'f2_routine',icon:'⏰',title:'الروتين اليومي',desc:'Activités',items:[
+        {w:'se lever',p:'/sə ləve/',e:'Je me lève à 7h',t:'أستيقظ 7'},
+        {w:'se laver',p:'/sə lave/',e:'Je me lave',t:'أستحم'},
+        {w:'prendre le petit-déjeuner',p:'/pʁɑ̃dʁ lə pəti deʒøne/',e:'Petit-déjeuner',t:'الإفطار'},
+        {w:'aller au travail',p:'/ale o tʁavaj/',e:'Je vais au travail',t:'أذهب للعمل'},
+        {w:'déjeuner',p:'/deʒøne/',e:'Je déjeune à midi',t:'أتناول الغداء'},
+        {w:'rentrer',p:'/ʁɑ̃tʁe/',e:'Il rentre à 18h',t:'يعود 18'},
+        {w:'regarder la télé',p:'/ʁəɡaʁde la tele/',e:'Regarder la télé',t:'مشاهدة التلفاز'},
+        {w:'se coucher',p:'/sə kuʃe/',e:'Je me couche à 23h',t:'أنام 23'}
+      ]},
+      {id:'f2_resto',icon:'🍽️',title:'في المطعم',desc:'Au restaurant',items:[
+        {w:'menu',p:'/məny/',e:'Le menu svp',t:'القائمة'},
+        {w:'commander',p:'/kɔmɑ̃de/',e:'Je voudrais commander',t:'أريد أن أطلب'},
+        {w:'serveur',p:'/sɛʁvœʁ/',e:'Le serveur est sympa',t:'النادل لطيف'},
+        {w:'addition',p:'/adisjɔ̃/',e:'L\'addition svp',t:'الفاتورة'},
+        {w:'délicieux',p:'/delisjø/',e:'C\'est délicieux',t:'هذا لذيذ'},
+        {w:'épicé',p:'/epise/',e:'Ce plat est épicé',t:'هذا الطبق حار'},
+        {w:'végétarien',p:'/veʒetaʁjɛ̃/',e:'Je suis végétarien',t:'أنا نباتي'}
+      ]},
+      {id:'f2_shop',icon:'🛍️',title:'التسوق',desc:'Shopping',items:[
+        {w:'prix',p:'/pʁi/',e:'Quel est le prix?',t:'ما السعر؟'},
+        {w:'cher',p:'/ʃɛʁ/',e:'C\'est trop cher',t:'هذا غالٍ'},
+        {w:'pas cher',p:'/pa ʃɛʁ/',e:'Pas cher',t:'رخيص'},
+        {w:'réduction',p:'/ʁedyksjɔ̃/',e:'Une réduction?',t:'هل هناك خصم؟'},
+        {w:'espèces',p:'/ɛspɛs/',e:'En espèces',t:'نقداً'},
+        {w:'carte bancaire',p:'/kaʁt bɑ̃kɛʁ/',e:'Carte bancaire',t:'بطاقة بنكية'},
+        {w:'reçu',p:'/ʁəsy/',e:'Le reçu svp',t:'الإيصال'}
+      ]},
+      {id:'f2_travel',icon:'✈️',title:'السفر',desc:'Voyage',items:[
+        {w:'aéroport',p:'/aeʁɔpɔʁ/',e:'L\'aéroport est loin',t:'المطار بعيد'},
+        {w:'billet',p:'/bijɛ/',e:'J\'ai acheté un billet',t:'اشتريت تذكرة'},
+        {w:'passeport',p:'/paspɔʁ/',e:'Votre passeport',t:'جوازك'},
+        {w:'bagages',p:'/baɡaʒ/',e:'Mes bagages sont lourds',t:'أمتعتي ثقيلة'},
+        {w:'vol',p:'/vɔl/',e:'Le vol est retardé',t:'الرحلة متأخرة'},
+        {w:'arriver',p:'/aʁive/',e:'Nous arrivons à 21h',t:'نصل 21'},
+        {w:'hôtel',p:'/otɛl/',e:'Réserver un hôtel',t:'احجز فندق'}
+      ]},
+      {id:'f2_weather',icon:'🌤️',title:'الطقس',desc:'La météo',items:[
+        {w:'ensoleillé',p:'/ɑ̃sɔlɛje/',e:'Il fait beau',t:'الجو مشمس'},
+        {w:'pluvieux',p:'/plɥivjø/',e:'Jour pluvieux',t:'يوم ممطر'},
+        {w:'nuageux',p:'/nɥaʒø/',e:'Ciel nuageux',t:'سماء غائمة'},
+        {w:'venteux',p:'/vɑ̃tø/',e:'Il fait venteux',t:'عاصف'},
+        {w:'chaud',p:'/ʃo/',e:'Il fait chaud',t:'الجو حار'},
+        {w:'froid',p:'/fʁwa/',e:'Il fait froid',t:'الجو بارد'},
+        {w:'doux',p:'/du/',e:'Il fait doux',t:'الجو لطيف'}
+      ]},
+      {id:'f2_health',icon:'🏥',title:'الصحة',desc:'La santé',items:[
+        {w:'médecin',p:'/medsɛ̃/',e:'Voir un médecin',t:'رؤية طبيب'},
+        {w:'hôpital',p:'/opital/',e:'L\'hôpital est proche',t:'المستشفى قريب'},
+        {w:'médicament',p:'/medikamɑ̃/',e:'Prendre un médicament',t:'تناول دواء'},
+        {w:'malade',p:'/malad/',e:'Je suis malade',t:'أنا مريض'},
+        {w:'douleur',p:'/dulœʁ/',e:'J\'ai une douleur',t:'عندي ألم'},
+        {w:'fièvre',p:'/fjɛvʁ/',e:'J\'ai de la fièvre',t:'عندي حمى'},
+        {w:'mal de tête',p:'/mal də tɛt/',e:'Mal de tête',t:'صداع'}
+      ]},
+      {id:'f2_work',icon:'💼',title:'العمل',desc:'Le travail',items:[
+        {w:'travail',p:'/tʁavaj/',e:'J\'ai un travail',t:'لدي عمل'},
+        {w:'bureau',p:'/byʁo/',e:'Le bureau est grand',t:'المكتب كبير'},
+        {w:'patron',p:'/patʁɔ̃/',e:'Mon patron est gentil',t:'مديري لطيف'},
+        {w:'réunion',p:'/ʁeynjɔ̃/',e:'Réunion à 10h',t:'اجتماع 10'},
+        {w:'salaire',p:'/salɛʁ/',e:'Bon salaire',t:'راتب جيد'},
+        {w:'collègue',p:'/kɔlɛɡ/',e:'Mon collègue aide',t:'زميلي يساعد'},
+        {w:'entreprise',p:'/ɑ̃tʁəpʁiz/',e:'Une grande entreprise',t:'شركة كبيرة'}
+      ]}
+    ]},
+    B1:{name:'متوسط B1',courses:[
+      {id:'f3_pc',icon:'📖',title:'الماضي المركب',desc:'Passé Composé',items:[
+        {w:'je suis allé',p:'/ʒə sɥiz ale/',e:'Je suis allé à Paris',t:'ذهبت لباريس'},
+        {w:'j\'ai vu',p:'/ʒe vy/',e:'J\'ai vu un film',t:'شاهدت فيلماً'},
+        {w:'j\'ai mangé',p:'/ʒe mɑ̃ʒe/',e:'J\'ai mangé pizza',t:'أكلت بيتزا'},
+        {w:'j\'ai acheté',p:'/ʒe aʃte/',e:'J\'ai acheté une voiture',t:'اشتريت سيارة'},
+        {w:'j\'ai fait',p:'/ʒe fɛ/',e:'J\'ai fait mes devoirs',t:'أنجزت واجباتي'},
+        {w:'j\'ai dit',p:'/ʒe di/',e:'J\'ai dit bonjour',t:'قلت مرحباً'},
+        {w:'j\'ai pris',p:'/ʒe pʁi/',e:'J\'ai pris le bus',t:'أخذت الحافلة'}
+      ]},
+      {id:'f3_imp',icon:'🕰️',title:'الماضي المستمر',desc:'Imparfait',items:[
+        {w:'j\'étais',p:'/ʒetɛ/',e:'J\'étais à la maison',t:'كنت في المنزل'},
+        {w:'j\'avais',p:'/ʒavɛ/',e:'J\'avais un chat',t:'كان لدي قط'},
+        {w:'je parlais',p:'/ʒə paʁlɛ/',e:'Je parlais avec lui',t:'كنت أتحدث معه'},
+        {w:'il faisait',p:'/il fəzɛ/',e:'Il faisait beau',t:'كان الجو جميلاً'},
+        {w:'nous allions',p:'/nu zaljɔ̃/',e:'Nous allions souvent',t:'كنا نذهب دائماً'}
+      ]},
+      {id:'f3_op',icon:'💭',title:'التعبير عن الرأي',desc:'Opinions',items:[
+        {w:'Je pense',p:'/ʒə pɑ̃s/',e:'Je pense que c\'est bon',t:'أعتقد جيد'},
+        {w:'À mon avis',p:'/a mɔ̃ navi/',e:'À mon avis',t:'في رأيي'},
+        {w:'Je suis d\'accord',p:'/ʒə sɥi dakɔʁ/',e:'Je suis d\'accord',t:'أوافق'},
+        {w:'Pas d\'accord',p:'/pa dakɔʁ/',e:'Pas d\'accord',t:'لا أوافق'},
+        {w:'Je crois',p:'/ʒə kʁwa/',e:'Je crois en toi',t:'أؤمن بك'},
+        {w:'Je propose',p:'/ʒə pʁɔpoz/',e:'Je propose une pause',t:'أقترح استراحة'}
+      ]},
+      {id:'f3_future',icon:'🔮',title:'المستقبل',desc:'Futur',items:[
+        {w:'j\'irai',p:'/ʒiʁe/',e:'J\'irai demain',t:'سأذهب غداً'},
+        {w:'je verrai',p:'/ʒə vɛʁe/',e:'Je te verrai',t:'سأراك'},
+        {w:'je vais étudier',p:'/ʒə vɛ etydje/',e:'Je vais étudier',t:'سأدرس'},
+        {w:'je serai',p:'/ʒə səʁe/',e:'Je serai là',t:'سأكون هناك'},
+        {w:'j\'aurai',p:'/ʒɔʁe/',e:'J\'aurai le temps',t:'سيكون لدي وقت'},
+        {w:'la semaine prochaine',p:'/la səmɛn pʁɔʃɛn/',e:'La semaine prochaine',t:'الأسبوع القادم'}
+      ]}
+    ]},
+    B2:{name:'متقدم B2',courses:[
+      {id:'f4_sub',icon:'🔀',title:'صيغة الشرط',desc:'Subjonctif',items:[
+        {w:'que je sois',p:'/kə ʒə swa/',e:'Il faut que je sois prêt',t:'يجب أن أستعد'},
+        {w:'que tu aies',p:'/kə ty ɛ/',e:'Je veux que tu aies confiance',t:'أريد أن تثق'},
+        {w:'qu\'il fasse',p:'/kil fas/',e:'Il faut qu\'il fasse attention',t:'يجب أن ينتبه'},
+        {w:'que nous allions',p:'/kə nu zaljɔ̃/',e:'Il faut que nous allions',t:'يجب أن نذهب'},
+        {w:'que vous veniez',p:'/kə vu vənje/',e:'Je veux que vous veniez',t:'أريد أن تأتوا'}
+      ]},
+      {id:'f4_conn',icon:'🔗',title:'أدوات الربط',desc:'Connecteurs',items:[
+        {w:'cependant',p:'/səpɑ̃dɑ̃/',e:'Cependant, je pense',t:'مع ذلك'},
+        {w:'néanmoins',p:'/neɑ̃mwɛ̃/',e:'Néanmoins, c\'est vrai',t:'رغم ذلك'},
+        {w:'par conséquent',p:'/paʁ kɔ̃sekɑ̃/',e:'Par conséquent',t:'نتيجة لذلك'},
+        {w:'en revanche',p:'/ɑ̃ ʁəvɑ̃ʃ/',e:'En revanche, je refuse',t:'في المقابل'},
+        {w:'de plus',p:'/də ply/',e:'De plus, c\'est utile',t:'بالإضافة لذلك'},
+        {w:'d\'ailleurs',p:'/dajœʁ/',e:'D\'ailleurs, il vient',t:'بالمناسبة'}
+      ]},
+      {id:'f4_idiom',icon:'🎭',title:'التعبيرات الاصطلاحية',desc:'Idiomes',items:[
+        {w:'casser les pieds',p:'/kase le pje/',e:'Tu me casses les pieds',t:'أنت تزعجني'},
+        {w:'coûter les yeux',p:'/kute le zjø/',e:'Ça coûte les yeux',t:'غالي جداً'},
+        {w:'avoir le cafard',p:'/avwaʁ lə kafaʁ/',e:'J\'ai le cafard',t:'أشعر بالحزن'},
+        {w:'poser un lapin',p:'/poze œ̃ lapɛ̃/',e:'Il m\'a posé un lapin',t:'خلف موعده'},
+        {w:'tomber dans les pommes',p:'/tɔ̃be dɑ̃ le pɔm/',e:'Il est tombé dans les pommes',t:'أغمي عليه'}
+      ]}
+    ]},
+    C1:{name:'متقدم C1',courses:[
+      {id:'f5_expr',icon:'💫',title:'التعبيرات المتقدمة',desc:'Expressions',items:[
+        {w:'mettre en œuvre',p:'/mɛtʁ ɑ̃ nœvʁ/',e:'Mettre en œuvre un plan',t:'تنفيذ خطة'},
+        {w:'prendre en compte',p:'/pʁɑ̃dʁ ɑ̃ kɔ̃t/',e:'Prendre en compte',t:'أخذ بعين الاعتبار'},
+        {w:'faire face à',p:'/fɛʁ fas a/',e:'Faire face aux défis',t:'مواجهة التحديات'},
+        {w:'mettre en place',p:'/mɛtʁ ɑ̃ plas/',e:'Mettre en place un système',t:'إنشاء نظام'}
+      ]},
+      {id:'f5_academic',icon:'🎓',title:'المفردات الأكاديمية',desc:'Académique',items:[
+        {w:'analyser',p:'/analize/',e:'Analyser les données',t:'تحليل البيانات'},
+        {w:'approche',p:'/apʁɔʃ/',e:'Une nouvelle approche',t:'نهج جديد'},
+        {w:'concept',p:'/kɔ̃sɛpt/',e:'Un concept clé',t:'مفهوم أساسي'},
+        {w:'significatif',p:'/siɲifikatif/',e:'Changement significatif',t:'تغيير مهم'},
+        {w:'hypothèse',p:'/ipɔtɛz/',e:'Tester une hypothèse',t:'اختبار فرضية'},
+        {w:'conclusion',p:'/kɔ̃klyzjɔ̃/',e:'En conclusion',t:'في الختام'},
+        {w:'preuve',p:'/pʁœv/',e:'Preuve solide',t:'دليل قوي'}
+      ]}
+    ]}
+  },
+  conversations:[
+    {id:'fc_boul',icon:'🥖',title:'في المخبز',lines:[
+      {s:'Vendeur',text:'Bonjour! Que voulez-vous?',tr:'مرحباً! ماذا تريد؟'},
+      {s:'Vous',text:'Bonjour! Une baguette svp.',tr:'مرحباً! خبز لو سمحت.'},
+      {s:'Vendeur',text:'C\'est tout?',tr:'هذا كل شيء؟'},
+      {s:'Vous',text:'Oui, combien ça coûte?',tr:'نعم، كم الثمن؟'},
+      {s:'Vendeur',text:'Un euro vingt.',tr:'يورو وعشرون سنتاً.'},
+      {s:'Vous',text:'Voilà. Merci!',tr:'تفضل. شكراً!'}
+    ]},
+    {id:'fc_train',icon:'🚆',title:'في القطار',lines:[
+      {s:'Agent',text:'Votre billet svp.',tr:'تذكرتك لو سمحت.'},
+      {s:'Vous',text:'Voilà.',tr:'تفضل.'},
+      {s:'Agent',text:'Destination?',tr:'الوجهة؟'},
+      {s:'Vous',text:'Paris.',tr:'باريس.'},
+      {s:'Agent',text:'Bon voyage!',tr:'رحلة سعيدة!'}
+    ]},
+    {id:'fc_cafe',icon:'☕',title:'في المقهى',lines:[
+      {s:'Serveur',text:'Bonjour! Qu\'est-ce que vous prenez?',tr:'مرحباً! ماذا تأخذ؟'},
+      {s:'Vous',text:'Un café svp.',tr:'قهوة لو سمحت.'},
+      {s:'Serveur',text:'Avec du sucre?',tr:'مع سكر؟'},
+      {s:'Vous',text:'Non merci.',tr:'لا شكراً.'},
+      {s:'Serveur',text:'Tout de suite.',tr:'حالاً.'}
+    ]}
+  ]
+}};
+
+// ============ BADGES ============
+const BADGES=[
+  {id:'first',icon:'🎯',name:'البداية',desc:'أكمل درساً',c:s=>s.lessons>=1},
+  {id:'alpha',icon:'🔤',name:'سيد الحروف',desc:'أكمل الحروف',c:s=>s.done.includes('e_alpha')||s.done.includes('f_alpha')},
+  {id:'st3',icon:'🔥',name:'3 أيام',desc:'سلسلة 3 أيام',c:s=>s.streak>=3},
+  {id:'st7',icon:'🔥🔥',name:'أسبوع',desc:'سلسلة 7 أيام',c:s=>s.streak>=7},
+  {id:'st30',icon:'🔥🔥🔥',name:'شهر',desc:'سلسلة 30 يوم',c:s=>s.streak>=30},
+  {id:'xp100',icon:'⭐',name:'100 نقطة',desc:'اجمع 100 XP',c:s=>s.xp>=100},
+  {id:'xp500',icon:'🌟',name:'500 نقطة',desc:'اجمع 500 XP',c:s=>s.xp>=500},
+  {id:'xp1000',icon:'💫',name:'1000 نقطة',desc:'اجمع 1000 XP',c:s=>s.xp>=1000},
+  {id:'perfect',icon:'💯',name:'الدرجة الكاملة',desc:'اختبار بدون أخطاء',c:s=>s.perfect>=1},
+  {id:'perfect5',icon:'🎖️',name:'خمس مثالية',desc:'5 اختبارات مثالية',c:s=>s.perfect>=5},
+  {id:'lv5',icon:'🏆',name:'المستوى 5',desc:'وصل للمستوى 5',c:s=>s.lv>=5},
+  {id:'lv10',icon:'👑',name:'المستوى 10',desc:'وصل للمستوى 10',c:s=>s.lv>=10},
+  {id:'bi',icon:'🌍',name:'ثنائي اللغة',desc:'تعلم اللغتين',c:s=>s.langs.size>=2},
+  {id:'sp50',icon:'🎤',name:'المتحدث',desc:'استخدم النطق 50 مرة',c:s=>s.speech>=50},
+  {id:'sp200',icon:'🗣️',name:'الخطيب',desc:'استخدم النطق 200 مرة',c:s=>s.speech>=200},
+  {id:'master',icon:'🎓',name:'الخبير',desc:'أكمل 20 درساً',c:s=>s.lessons>=20}
+];
+
+// ============ STATE ============
+const S={
+  lang:'en',view:'home',
+  course:null,idx:0,mode:'card',
+  qz:[],qi:0,qs:0,
+  xp:0,streak:0,lv:1,lessons:0,perfect:0,speech:0,gems:0,
+  done:[],items:{},history:{},todayXp:0,langs:new Set(),badges:[],
+  goal:50,theme:'light',sound:true,haptic:true,
+  recog:null
+};
+
+// ============ ACTIVATION SYSTEM (FIXED) ============
+const Activation={
+  KEY:'linguapro_activation',
+  DEVICE_KEY:'linguapro_device_id',
+  TRIAL_KEY:'linguapro_trial',
+  
+  // توليد Device ID فريد وثابت
+  getDeviceId(){
+    let deviceId=localStorage.getItem(this.DEVICE_KEY);
+    
+    if(!deviceId){
+      // ✅ معايير ثابتة لا تتغير
+      const stable=[
+        navigator.userAgent||'ua',
+        navigator.language||'lang',
+        navigator.platform||'platform',
+        Math.min(screen.width,screen.height)+'x'+Math.max(screen.width,screen.height),
+        screen.colorDepth||24,
+        Intl.DateTimeFormat().resolvedOptions().timeZone||'tz',
+        navigator.hardwareConcurrency||4,
+        navigator.maxTouchPoints||0
+      ];
+      
+      const str=stable.join('|');
+      
+      let hash=0x811c9dc5;
+      for(let i=0;i<str.length;i++){
+        hash^=str.charCodeAt(i);
+        hash=(hash*0x01000193)>>>0;
+      }
+      
+      let hash2=0xdeadbeef;
+      for(let i=str.length-1;i>=0;i--){
+        hash2^=str.charCodeAt(i);
+        hash2=(hash2*0x85ebca6b)>>>0;
+      }
+      
+      const chars='ABCDEFGHJKMNPQRSTUVWXYZ23456789';
+      let id='LP-';
+      
+      for(let i=0;i<4;i++){
+        hash=((hash*1103515245)+12345)>>>0;
+        id+=chars.charAt(hash%chars.length);
+      }
+      id+='-';
+      for(let i=0;i<4;i++){
+        hash2=((hash2*22695477)+1)>>>0;
+        id+=chars.charAt(hash2%chars.length);
+      }
+      
+      deviceId=id;
+      localStorage.setItem(this.DEVICE_KEY,deviceId);
+    }
+    
+    return deviceId;
+  },
+  
+  // توليد الكود المتوقع
+  generateExpectedCode(deviceId){
+    const cleanId=deviceId.trim().toUpperCase().replace(/[^A-Z0-9]/g,'');
+    const combined=cleanId+CONFIG.SECRET_KEY;
+    
+    let hash1=0x811c9dc5;
+    let hash2=0x1000193;
+    let hash3=0x9e3779b9;
+    
+    for(let i=0;i<combined.length;i++){
+      const c=combined.charCodeAt(i);
+      hash1^=c;
+      hash1=(hash1*0x01000193)>>>0;
+      hash2=((hash2<<5)-hash2+c)>>>0;
+      hash3^=(c*0x85ebca6b)>>>0;
+      hash3=((hash3<<13)|(hash3>>>19))>>>0;
+    }
+    
+    const chars='ABCDEFGHJKMNPQRSTUVWXYZ23456789';
+    let code='LPX';
+    let h1=hash1,h2=hash2,h3=hash3;
+    
+    for(let i=0;i<12;i++){
+      if(i%4===0&&i>0)code+='-';
+      h1=((h1*1103515245)+12345)>>>0;
+      h2=((h2*22695477)+1)>>>0;
+      h3=((h3^(h3>>>7))*0x5bd1e995)>>>0;
+      
+      const idx=(h1+h2+h3+i*31)%chars.length;
+      code+=chars.charAt(idx);
+    }
+    
+    return code;
+  },
+  
+  // التحقق من الكود
+  isValidCode(inputCode){
+    const deviceId=this.getDeviceId();
+    const expected=this.generateExpectedCode(deviceId);
+    
+    const cleaned=inputCode.trim().toUpperCase().replace(/[^A-Z0-9]/g,'');
+    const expectedClean=expected.replace(/[^A-Z0-9]/g,'');
+    
+    return cleaned===expectedClean;
+  },
+  
+  // حفظ التفعيل
+  save(code){
+    const data={
+      activated:true,
+      code:code.toUpperCase().trim(),
+      deviceId:this.getDeviceId(),
+      activatedAt:Date.now(),
+      version:'6.1'
+    };
+    localStorage.setItem(this.KEY,JSON.stringify(data));
+  },
+  
+  // فحص التفعيل
+  isActivated(){
+    try{
+      const raw=localStorage.getItem(this.KEY);
+      if(!raw)return false;
+      
+      const data=JSON.parse(raw);
+      
+      if(!this.isValidCode(data.code)){
+        console.warn('[Activation] Code invalid for this device');
+        return false;
+      }
+      
+      if(data.deviceId!==this.getDeviceId()){
+        console.warn('[Activation] Device mismatch');
+        return false;
+      }
+      
+      return true;
+    }catch(e){
+      return false;
+    }
+  },
+  
+  clear(){
+    localStorage.removeItem(this.KEY);
+  },
+  
+  // ============ نظام التجربة 7 أيام ============
+  startTrial(){
+    let trial=this.getTrialData();
+    if(!trial){
+      trial={
+        start:Date.now(),
+        end:Date.now()+(CONFIG.TRIAL_DAYS*86400000)
+      };
+      localStorage.setItem(this.TRIAL_KEY,JSON.stringify(trial));
+    }
+    return trial;
+  },
+  
+  getTrialData(){
+    try{
+      const raw=localStorage.getItem(this.TRIAL_KEY);
+      return raw?JSON.parse(raw):null;
+    }catch(e){
+      return null;
+    }
+  },
+  
+  getTrialDaysLeft(){
+    const trial=this.getTrialData();
+    if(!trial)return CONFIG.TRIAL_DAYS;
+    const left=Math.ceil((trial.end-Date.now())/86400000);
+    return Math.max(0,left);
+  },
+  
+  isTrialActive(){
+    const trial=this.getTrialData();
+    if(!trial)return false;
+    return Date.now()<trial.end;
+  },
+  
+  isTrialExpired(){
+    const trial=this.getTrialData();
+    if(!trial)return false;
+    return Date.now()>=trial.end;
+  },
+  
+  // فحص إمكانية الوصول
+  canAccess(){
+    if(this.isActivated())return true;
+    if(this.isTrialActive())return true;
+    return false;
+  },
+  
+  // إرسال للواتساب
+  sendToWhatsApp(){
+    const deviceId=this.getDeviceId();
+    const msg=encodeURIComponent(
+      CONFIG.WHATSAPP_MSG+'\n\n'+deviceId+'\n\nوشكراً!'
+    );
+    const url=`https://wa.me/${CONFIG.SELLER_WHATSAPP}?text=${msg}`;
+    window.open(url,'_blank');
+  },
+  
+  // عرض الشاشة
+  show(){
+    document.getElementById('activation').classList.remove('hide');
+    this.showStep1();
+    this.updateDisplay();
+  },
+  
+  hide(){
+    document.getElementById('activation').classList.add('hide');
+  },
+  
+  showStep1(){
+    document.getElementById('actStep1').classList.remove('hide');
+    document.getElementById('actStep2').classList.add('hide');
+    
+    const trialInfo=document.getElementById('trialInfo');
+    if(trialInfo){
+      if(this.isTrialExpired()){
+        trialInfo.innerHTML='⏰ <strong>انتهت تجربتك المجانية</strong><br>اشترك للاستمرار';
+        trialInfo.style.display='block';
+      }else if(this.isTrialActive()){
+        const days=this.getTrialDaysLeft();
+        trialInfo.innerHTML=`✨ <strong>تجربة مجانية - متبقي ${days} يوم</strong>`;
+        trialInfo.style.display='block';
+      }
+    }
+  },
+  
+  showStep2(){
+    document.getElementById('actStep1').classList.add('hide');
+    document.getElementById('actStep2').classList.remove('hide');
+    document.getElementById('licenseInput').value='';
+    document.getElementById('licenseFeedback').className='qf';
+  },
+  
+  updateDisplay(){
+    const id=this.getDeviceId();
+    const el1=document.getElementById('deviceIdDisplay');
+    const el2=document.getElementById('deviceIdDisplay2');
+    if(el1)el1.textContent=id;
+    if(el2)el2.textContent=id;
+  },
+  
+  updateTrialBanner(){
+    const banner=document.getElementById('trialBanner');
+    const text=document.getElementById('trialText');
+    if(!banner||!text)return;
+    
+    if(this.isActivated()){
+      banner.classList.add('hide');
+      document.body.classList.remove('has-trial-banner');
+      return;
+    }
+    
+    if(this.isTrialActive()){
+      const days=this.getTrialDaysLeft();
+      text.textContent=`⏰ تجربة مجانية - متبقي ${days} يوم`;
+      banner.classList.remove('hide');
+      document.body.classList.add('has-trial-banner');
+    }else{
+      banner.classList.add('hide');
+      document.body.classList.remove('has-trial-banner');
+    }
+  }
+};
+
+// ============ STORAGE ============
+const Store={
+  KEY:'linguapro_v6',
+  save(){
+    const d={lang:S.lang,xp:S.xp,streak:S.streak,lv:S.lv,lessons:S.lessons,
+      perfect:S.perfect,speech:S.speech,gems:S.gems,done:S.done,items:S.items,
+      history:S.history,todayXp:S.todayXp,langs:[...S.langs],badges:S.badges,
+      goal:S.goal,theme:S.theme,sound:S.sound,haptic:S.haptic,
+      lastVisit:new Date().toDateString()};
+    try{localStorage.setItem(this.KEY,JSON.stringify(d))}catch(e){}
+  },
+  load(){
+    try{
+      const r=localStorage.getItem(this.KEY);
+      if(!r)return false;
+      const d=JSON.parse(r);
+      Object.assign(S,{
+        lang:d.lang||'en',xp:d.xp||0,streak:d.streak||0,lv:d.lv||1,
+        lessons:d.lessons||0,perfect:d.perfect||0,speech:d.speech||0,
+        gems:d.gems||0,done:d.done||[],items:d.items||{},history:d.history||{},
+        todayXp:d.todayXp||0,badges:d.badges||[],goal:d.goal||50,
+        theme:d.theme||'light',sound:d.sound!==false,haptic:d.haptic!==false
+      });
+      S.langs=new Set(d.langs||[]);
+      const today=new Date().toDateString();
+      const yest=new Date(Date.now()-86400000).toDateString();
+      if(d.lastVisit!==today){
+        S.todayXp=0;
+        S.streak=(d.lastVisit===yest)?(d.streak||0)+1:1;
+      }
+      return true;
+    }catch(e){return false}
+  }
+};
+
+// ============ SPEECH ============
+const Sp={
+  voices:[],sup:'speechSynthesis' in window,
+  recSup:'webkitSpeechRecognition' in window||'SpeechRecognition' in window,
+  init(){
+    if(!this.sup)return;
+    const l=()=>this.voices=speechSynthesis.getVoices();
+    l();speechSynthesis.onvoiceschanged=l;
+  },
+  say(text,lang=S.lang,rate=.85,end){
+    if(!this.sup||!S.sound){end&&end();return}
+    speechSynthesis.cancel();
+    const u=new SpeechSynthesisUtterance(text);
+    u.lang=lang==='en'?'en-US':'fr-FR';
+    u.rate=rate;u.pitch=1;
+    const v=this.voices.find(x=>x.lang.startsWith(lang==='en'?'en':'fr'));
+    if(v)u.voice=v;
+    u.onend=()=>end&&end();
+    u.onerror=()=>end&&end();
+    speechSynthesis.speak(u);
+    S.speech++;Store.save();
+  },
+  stop(){if(this.sup)speechSynthesis.cancel()},
+  rec(lang,onRes,onErr){
+    if(!this.recSup){onErr&&onErr('غير مدعوم');return null}
+    const R=window.SpeechRecognition||window.webkitSpeechRecognition;
+    const r=new R();
+    r.lang=lang==='en'?'en-US':'fr-FR';
+    r.interimResults=false;r.maxAlternatives=1;r.continuous=false;
+    r.onresult=e=>onRes&&onRes(e.results[0][0].transcript,e.results[0][0].confidence);
+    r.onerror=e=>onErr&&onErr(e.error);
+    r.start();return r;
+  }
+};
+
+// ============ UI ============
+const UI={
+  toast(msg,dur=2000,type='info'){
+    const t=document.getElementById('toast');
+    t.textContent=msg;t.className='ts show';
+    const bg={success:'#10b981',error:'#ef4444',warning:'#f59e0b'}[type]||'var(--tx)';
+    t.style.background=bg;t.style.color='#fff';
+    clearTimeout(t._t);t._t=setTimeout(()=>t.classList.remove('show'),dur);
+  },
+  confetti(){
+    const c=document.getElementById('confetti');
+    const cols=['#6366f1','#f59e0b','#ec4899','#10b981','#ef4444','#3b82f6'];
+    for(let i=0;i<40;i++){
+      const p=document.createElement('div');
+      p.className='cfp';
+      p.style.left=Math.random()*100+'%';
+      p.style.background=cols[i%cols.length];
+      p.style.animationDelay=Math.random()*.5+'s';
+      p.style.borderRadius=Math.random()>.5?'50%':'0';
+      c.appendChild(p);setTimeout(()=>p.remove(),3500);
+    }
+  },
+  haptic(){if(S.haptic&&navigator.vibrate)navigator.vibrate(15)},
+  stats(){
+    document.getElementById('sStreak').textContent=S.streak;
+    document.getElementById('sXp').textContent=S.xp;
+    document.getElementById('sGem').textContent=S.gems;
+    document.getElementById('sLv').textContent=S.lv;
+    const pct=Math.min(100,(S.todayXp/S.goal)*100);
+    document.getElementById('gpFill').style.width=pct+'%';
+  },
+  addXp(n){
+    S.xp+=n;S.todayXp+=n;
+    const d=new Date().toISOString().split('T')[0];
+    S.history[d]=(S.history[d]||0)+n;
+    const nl=Math.floor(S.xp/100)+1;
+    if(nl>S.lv){S.lv=nl;this.confetti();this.toast('🎉 المستوى '+nl+'!',2500,'success');S.gems+=5}
+    this.stats();Store.save();checkBadges();
+  },
+  modal(html){
+    document.getElementById('modalBox').innerHTML=html;
+    document.getElementById('modal').classList.remove('hide');
+  },
+  closeModal(){document.getElementById('modal').classList.add('hide')}
+};
+
+// ============ BADGES CHECK ============
+function checkBadges(){
+  BADGES.forEach(b=>{
+    if(!S.badges.includes(b.id)&&b.c(S)){
+      S.badges.push(b.id);
+      UI.toast('🏅 شارة جديدة: '+b.name,2500,'success');
+      UI.confetti();
+      S.gems+=3;
+    }
+  });
+  Store.save();
+}
+
+// ============ HELPERS ============
+const sh=a=>{a=[...a];for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a};
+const esc=s=>String(s).replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
+function findCourse(id){
+  const lv=DB[S.lang].levels;
+  for(const k in lv){
+    const c=lv[k].courses.find(x=>x.id===id);
+    if(c)return{c,lv:k};
+  }
+  return null;
+}
+
+// ============ VIEWS ============
+const Views={
+  home(){
+    const L=DB[S.lang];
+    const pct=Math.min(100,(S.todayXp/S.goal)*100);
+    const rem=Math.max(0,S.goal-S.todayXp);
+    const all=[];
+    Object.keys(L.levels).forEach(k=>L.levels[k].courses.forEach(c=>all.push({c,lv:k})));
+    const rec=all.filter(x=>!S.done.includes(x.c.id)).slice(0,3);
+    const show=rec.length?rec:sh(all).slice(0,3);
+    
+    return `
+      <div id="installBanner" class="install-banner">
+        <span style="font-size:1.5rem">📲</span>
+        <div style="flex:1">
+          <div style="font-weight:800;font-size:.9rem">ثبّت التطبيق</div>
+          <div style="font-size:.75rem;opacity:.9">للاستخدام بدون إنترنت</div>
+        </div>
+        <button id="installBtn">تثبيت</button>
+        <button class="ibx" id="installClose">✕</button>
+      </div>
+      
+      <div class="hero">
+        <h1>أهلاً بك! ${L.flag}</h1>
+        <p>واصل رحلتك في تعلم ${L.name}</p>
+        <div class="dg">
+          <div class="dgh"><span>🎯 هدف اليوم</span><span>${S.todayXp} / ${S.goal} XP</span></div>
+          <div class="dgb"><div class="dgf" style="width:${pct}%"></div></div>
+          <p style="margin-top:8px;font-size:.8rem;opacity:.9">
+            ${rem>0?'تبقى '+rem+' XP':'🎉 حققت هدف اليوم!'}
+          </p>
+        </div>
+      </div>
+      
+      <div class="stt"><span>📚 دروس مقترحة</span><span class="lnk" data-v="learn">الكل ←</span></div>
+      <div class="cg">${show.map(x=>this.cc(x.c,x.lv)).join('')}</div>
+      
+      <div class="stt"><span>🌍 تبديل اللغة</span></div>
+      <div style="display:flex;gap:10px;margin-bottom:15px">
+        <button class="btn ${S.lang==='en'?'bp':'bs'} bf" data-lang="en">🇬🇧 English</button>
+        <button class="btn ${S.lang==='fr'?'bp':'bs'} bf" data-lang="fr">🇫🇷 Français</button>
+      </div>
+      
+      <div class="stt"><span>💬 محادثات</span></div>
+      <div class="cg">
+        ${L.conversations.map(c=>`
+          <div class="cc" data-conv="${c.id}">
+            <span class="ci">${c.icon}</span>
+            <div class="ct">${c.title}</div>
+            <div class="cd">محادثة تفاعلية مع ترجمة</div>
+            <div class="cm"><span>💬 ${c.lines.length} جمل</span><span class="lv lv-B1">محادثة</span></div>
+          </div>
+        `).join('')}
+      </div>
+      
+      <div class="stt"><span>📊 ملخص سريع</span></div>
+      <div class="pstats">
+        <div class="sc2"><div class="v">${S.xp}</div><div class="l">إجمالي XP</div></div>
+        <div class="sc2"><div class="v">${S.streak}</div><div class="l">أيام متتالية</div></div>
+        <div class="sc2"><div class="v">${S.lessons}</div><div class="l">دروس مكتملة</div></div>
+        <div class="sc2"><div class="v">${S.lv}</div><div class="l">المستوى</div></div>
+      </div>
+    `;
+  },
+  cc(c,lv){
+    const done=S.done.includes(c.id);
+    const it=(S.items[c.id]||[]).length;
+    const pct=Math.round((it/c.items.length)*100);
+    return `
+      <div class="cc ${done?'done':''}" data-course="${c.id}">
+        <span class="ci">${c.icon}</span>
+        <div class="ct">${c.title}</div>
+        <div class="cd">${c.desc}</div>
+        <div class="cm"><span>📖 ${c.items.length} بطاقة</span><span class="lv lv-${lv}">${lv}</span></div>
+        <div class="pb"><div class="pf" style="width:${pct}%"></div></div>
+      </div>
+    `;
+  },
+  learn(){
+    const L=DB[S.lang];
+    return `
+      <div class="stt"><span>📚 مسار التعلم - ${L.name}</span></div>
+      ${Object.keys(L.levels).map(k=>{
+        const lv=L.levels[k];
+        const done=lv.courses.filter(c=>S.done.includes(c.id)).length;
+        const pct=Math.round((done/lv.courses.length)*100);
+        return `
+          <div style="margin-bottom:25px">
+            <div style="display:flex;justify-content:space-between;margin-bottom:10px">
+              <strong style="font-size:1rem"><span class="lv lv-${k}">${k}</span> ${lv.name}</strong>
+              <span style="color:var(--tl);font-size:.8rem;font-weight:700">${done}/${lv.courses.length}</span>
+            </div>
+            <div class="pb" style="margin-bottom:12px"><div class="pf" style="width:${pct}%"></div></div>
+            <div class="cg">${lv.courses.map(c=>this.cc(c,k)).join('')}</div>
+          </div>
+        `;
+      }).join('')}
+    `;
+  },
+  practice(){
+    return `
+      <div class="stt"><span>🎯 مركز التدريبات</span></div>
+      <p style="color:var(--tl);margin-bottom:15px;font-size:.9rem">اختر نوع التمرين</p>
+      <div class="cg">
+        <div class="cc" data-practice="quiz"><span class="ci">📝</span><div class="ct">اختبار عشوائي</div><div class="cd">اختبر معرفتك بكلمات من جميع الدروس</div><div class="cm"><span>🧠 4 خيارات</span><span class="lv lv-A2">سريع</span></div></div>
+        <div class="cc" data-practice="listening"><span class="ci">🎧</span><div class="ct">تمرين الاستماع</div><div class="cd">استمع واكتب الكلمة الصحيحة</div><div class="cm"><span>👂 سمعي</span><span class="lv lv-B1">متوسط</span></div></div>
+        <div class="cc" data-practice="speaking"><span class="ci">🎤</span><div class="ct">تصحيح النطق</div><div class="cd">تحدث وسنقيس دقة نطقك بالذكاء الاصطناعي</div><div class="cm"><span>🤖 AI</span><span class="lv lv-PRO">مميز</span></div></div>
+        <div class="cc" data-practice="cards"><span class="ci">🎴</span><div class="ct">بطاقات سريعة</div><div class="cd">راجع الكلمات بسرعة</div><div class="cm"><span>⚡ سريع</span><span class="lv lv-A1">مبتدئ</span></div></div>
+      </div>
+      <div class="stt" style="margin-top:20px"><span>💪 نصيحة اليوم</span></div>
+      <div class="card" style="background:linear-gradient(135deg,var(--p),var(--a));color:#fff">
+        <p style="font-size:.95rem;line-height:1.8">"التعلم المستمر أهم من المكثف. خصص 15 دقيقة يومياً وسترى فرقاً كبيراً!"</p>
+      </div>
+    `;
+  },
+  progress(){
+    const days=[];
+    const today=new Date();
+    for(let i=29;i>=0;i--){
+      const d=new Date(today);
+      d.setDate(today.getDate()-i);
+      const key=d.toISOString().split('T')[0];
+      days.push({key,xp:S.history[key]||0,today:i===0});
+    }
+    const earned=S.badges.length;
+    return `
+      <div class="stt"><span>📊 لوحة التقدم</span></div>
+      <div class="pstats">
+        <div class="sc2"><div class="v">${S.xp}</div><div class="l">إجمالي XP</div></div>
+        <div class="sc2"><div class="v">${S.lv}</div><div class="l">المستوى</div></div>
+        <div class="sc2"><div class="v">${S.streak}🔥</div><div class="l">السلسلة</div></div>
+        <div class="sc2"><div class="v">${S.lessons}</div><div class="l">دروس</div></div>
+        <div class="sc2"><div class="v">${S.perfect}</div><div class="l">مثالية</div></div>
+        <div class="sc2"><div class="v">${S.speech}</div><div class="l">مرات نطق</div></div>
+      </div>
+      
+      <div class="stt" style="margin-top:20px"><span>📅 آخر 30 يوم</span></div>
+      <div class="card">
+        <div class="hm">
+          ${days.map(d=>`<div class="hmd ${d.xp>0?'on':''} ${d.today?'today':''}" title="${d.key}: ${d.xp} XP"></div>`).join('')}
+        </div>
+        <div style="display:flex;justify-content:space-between;font-size:.7rem;color:var(--tl);margin-top:6px">
+          <span>قبل 30 يوم</span><span>اليوم</span>
+        </div>
+      </div>
+      
+      <div class="stt" style="margin-top:20px"><span>🏆 الشارات (${earned}/${BADGES.length})</span></div>
+      <div class="bg">
+        ${BADGES.map(b=>{
+          const e=S.badges.includes(b.id);
+          return `<div class="bc ${e?'earned':'locked'}">
+            <div class="bi">${e?b.icon:'🔒'}</div>
+            <div class="bn">${b.name}</div>
+            <div class="bd2">${b.desc}</div>
+          </div>`;
+        }).join('')}
+      </div>
+    `;
+  },
+  profile(){
+    const ranks=['مبتدئ','متعلم','متوسط','متقدم','خبير','محترف','أسطورة'];
+    const rk=ranks[Math.min(ranks.length-1,Math.floor(S.lv/2))];
+    const deviceId=Activation.getDeviceId();
+    const isPremium=Activation.isActivated();
+    const trialDays=Activation.getTrialDaysLeft();
+    
+    let statusText='';
+    if(isPremium){
+      statusText='<div style="font-weight:800;font-size:.9rem">✅ التطبيق مُفعّل</div><div class="pro-badge">👑 Premium</div>';
+    }else if(Activation.isTrialActive()){
+      statusText=`<div style="font-weight:800;font-size:.9rem">✨ تجربة مجانية</div><div style="font-size:.8rem;color:var(--tl);margin-top:3px">متبقي ${trialDays} يوم</div>`;
+    }else{
+      statusText='<div style="font-weight:800;font-size:.9rem">⏰ انتهت التجربة</div><div style="font-size:.8rem;color:var(--err);margin-top:3px">اشترك للاستمرار</div>';
+    }
+    
+    return `
+      <div class="pfc ${isPremium?'pro':''}">
+        <div class="pav">👤</div>
+        <div class="pnm">المتعلم</div>
+        <div class="prk">${isPremium?'👑 Premium':''} 🏅 ${rk} - Lv${S.lv}</div>
+      </div>
+      
+      <div class="card" style="margin-bottom:15px">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
+          ${statusText}
+        </div>
+        <div style="font-size:.75rem;color:var(--tl);margin-bottom:6px">Device ID:</div>
+        <div style="font-family:monospace;font-size:.9rem;font-weight:900;color:var(--p);letter-spacing:1px;padding:8px;background:var(--bg);border-radius:8px;text-align:center">${deviceId}</div>
+        <div style="font-size:.7rem;color:var(--tl);margin-top:8px;text-align:center">هذا التطبيق مخصص لهذا الجهاز فقط</div>
+        ${!isPremium?`<button class="btn btn-pro bf" id="upgradeProfileBtn" style="margin-top:12px">👑 ترقية إلى Premium</button>`:''}
+      </div>
+      
+      <div class="stt"><span>⚙️ الإعدادات</span></div>
+      <div class="card">
+        <div class="row">
+          <div><div class="row-t">🌙 الوضع الليلي</div></div>
+          <label class="tg"><input type="checkbox" id="stTheme" ${S.theme==='dark'?'checked':''}><span class="tgs"></span></label>
+        </div>
+        <div class="row">
+          <div><div class="row-t">🔊 الصوت</div></div>
+          <label class="tg"><input type="checkbox" id="stSound" ${S.sound?'checked':''}><span class="tgs"></span></label>
+        </div>
+        <div class="row">
+          <div><div class="row-t">📳 الاهتزاز</div></div>
+          <label class="tg"><input type="checkbox" id="stHaptic" ${S.haptic?'checked':''}><span class="tgs"></span></label>
+        </div>
+        <div class="row" style="flex-wrap:wrap">
+          <div style="flex:1;min-width:150px"><div class="row-t">🎯 الهدف اليومي</div><div class="row-d">${S.goal} XP</div></div>
+          <div style="display:flex;gap:5px">
+            ${[20,50,100,200].map(g=>`<button class="btn ${S.goal===g?'bp':'bs'} bsm goal-btn" data-goal="${g}">${g}</button>`).join('')}
+          </div>
+        </div>
+      </div>
+      
+      <div class="stt" style="margin-top:20px"><span>ℹ️ حول التطبيق</span></div>
+      <div class="card">
+        <p style="line-height:1.8;color:var(--tl);font-size:.9rem">
+          <strong style="color:var(--tx)">LinguaPro v6.1 - Premium</strong><br>
+          منصة تعلم اللغات الذكية<br>
+          🇬🇧 إنجليزي + 🇫🇷 فرنسي<br>
+          مستويات A1 → C1<br>
+          ✨ نسخة مدفوعة - تفعيل لكل جهاز<br>
+          ✨ PWA - يعمل بدون إنترنت
+        </p>
+      </div>
+      
+      <div class="stt" style="margin-top:20px"><span>⚠️ منطقة الخطر</span></div>
+      <button class="btn berr bf" id="resetBtn" style="margin-bottom:10px">🔄 إعادة تعيين التقدم</button>
+      <button class="btn bs bf" id="contactSupportBtn">💬 تواصل مع الدعم</button>
+    `;
+  },
+  conversation(conv){
+    const isLast=conv.current===conv.lines.length-1;
+    return `
+      <div class="lh">
+        <button class="btn bs bsm" id="bkBtn">← رجوع</button>
+        <div class="lt">${conv.icon} ${conv.title}</div>
+        <div class="lp">${conv.current+1}/${conv.lines.length}</div>
+      </div>
+      <div class="lpb"><div class="lpf" style="width:${((conv.current+1)/conv.lines.length)*100}%"></div></div>
+      
+      <div style="max-width:600px;margin:20px auto">
+        ${conv.lines.map((l,i)=>{
+          const isPast=i<conv.current;
+          const isCurrent=i===conv.current;
+          if(!isPast&&!isCurrent)return'';
+          const isYou=l.s==='You'||l.s==='Vous';
+          const col=isYou?'var(--p)':'var(--s)';
+          return `
+            <div style="margin-bottom:12px;opacity:${isCurrent?1:.5};animation:${isCurrent?'fi .4s':'none'}">
+              <div style="display:flex;gap:10px;${isYou?'flex-direction:row-reverse':''}">
+                <div style="background:${col};color:#fff;width:36px;height:36px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:900;flex-shrink:0;font-size:.8rem">${isYou?'👤':'🗣️'}</div>
+                <div style="background:var(--cb);padding:14px;border-radius:14px;flex:1;box-shadow:var(--sh);border:2px solid ${isCurrent?col:'transparent'}">
+                  <div style="font-weight:800;font-size:.75rem;color:${col};margin-bottom:5px">${esc(l.s)}</div>
+                  <div style="font-size:1.05rem;direction:ltr;text-align:left;font-family:Helvetica,Arial,sans-serif;margin-bottom:6px">${esc(l.text)}</div>
+                  <div style="color:var(--tl);font-size:.85rem">${esc(l.tr)}</div>
+                  <button class="spb" data-text="${esc(l.text)}" style="background:${col};border-color:${col};width:36px;height:36px;font-size:.9rem;margin-top:8px">🔊</button>
+                </div>
+              </div>
+            </div>
+          `;
+        }).join('')}
+      </div>
+      
+      <div class="ctrl">
+        <button class="btn bs" id="prevConv" ${conv.current===0?'disabled':''}>← السابق</button>
+        <button class="btn bp" id="nextConv">${isLast?'إنهاء ✓':'التالي →'}</button>
+      </div>
+    `;
+  }
+};
+
+// ============ LESSON PLAYER ============
+const Lesson={
+  open(id){
+    const f=findCourse(id);
+    if(!f)return;
+    S.course=f.c;S.idx=0;S.mode='card';
+    S.langs.add(S.lang);Store.save();
+    this.render();
+  },
+  render(){
+    const c=S.course,i=c.items[S.idx],tot=c.items.length,cur=S.idx+1;
+    const pct=(cur/tot)*100;
+    document.getElementById('mn').innerHTML=`
+      <div class="lh">
+        <button class="btn bs bsm" id="bkBtn">← رجوع</button>
+        <div class="lt">${c.icon} ${c.title}</div>
+        <div class="lp">${cur}/${tot}</div>
+      </div>
+      <div class="lpb"><div class="lpf" style="width:${pct}%"></div></div>
+      <div id="lc"></div>
+    `;
+    document.getElementById('bkBtn').onclick=()=>{Sp.stop();App.switch('learn')};
+    if(S.mode==='card')this.card();
+    else if(S.mode==='quiz')this.quiz();
+    else if(S.mode==='listening')this.listen();
+    else if(S.mode==='speaking')this.speak();
+  },
+  card(){
+    const c=S.course,i=c.items[S.idx];
+    const last=S.idx===c.items.length-1;
+    document.getElementById('lc').innerHTML=`
+      <div class="fcc">
+        <div class="fc" id="fc">
+          <div class="fcf fcfr">
+            <div class="fcw">${esc(i.w)}</div>
+            <div class="fcp">${esc(i.p)}</div>
+            <button class="spb" id="sp1">🔊</button>
+            <div class="fh">👆 اضغط للقلب</div>
+          </div>
+          <div class="fcf fcb">
+            <div class="fce">${esc(i.e)}</div>
+            <div class="fct">${esc(i.t)}</div>
+            <button class="spb" id="sp2">🔊</button>
+            <div class="fh">👆 اضغط للرجوع</div>
+          </div>
+        </div>
+      </div>
+      <div class="ctrl">
+        <button class="btn bs" id="pv" ${S.idx===0?'disabled':''}>← السابق</button>
+        <button class="btn berr" id="hard">😓 صعب</button>
+        <button class="btn bok" id="easy">😊 سهل</button>
+        <button class="btn bp" id="nx">${last?'إنهاء ✓':'التالي →'}</button>
+      </div>
+      <div class="ctrl">
+        <button class="btn bs bsm" id="goQz">📝 اختبار</button>
+        <button class="btn bs bsm" id="goLi">🎧 استماع</button>
+        <button class="btn bs bsm" id="goSp">🎤 نطق</button>
+      </div>
+    `;
+    const fc=document.getElementById('fc');
+    fc.onclick=e=>{if(e.target.closest('.spb'))return;fc.classList.toggle('flip');UI.haptic()};
+    document.getElementById('sp1').onclick=e=>{e.stopPropagation();Sp.say(i.w)};
+    document.getElementById('sp2').onclick=e=>{e.stopPropagation();Sp.say(i.e)};
+    if(S.sound)Sp.say(i.w);
+    document.getElementById('pv').onclick=()=>{if(S.idx>0){S.idx--;this.mark(S.idx);this.render()}};
+    document.getElementById('nx').onclick=()=>{this.mark(S.idx);last?this.complete():this.next()};
+    document.getElementById('easy').onclick=()=>{UI.toast('😊 رائع!',1200,'success');UI.addXp(5);this.mark(S.idx);last?this.complete():this.next()};
+    document.getElementById('hard').onclick=()=>{UI.toast('💪 راجعها لاحقاً',1200,'warning');document.getElementById('fc').classList.remove('flip');Sp.say(i.w)};
+    document.getElementById('goQz').onclick=()=>this.startQz();
+    document.getElementById('goLi').onclick=()=>{S.mode='listening';this.render()};
+    document.getElementById('goSp').onclick=()=>{S.mode='speaking';this.render()};
+  },
+  next(){S.idx++;UI.addXp(3);this.render()},
+  mark(i){
+    const id=S.course.id;
+    if(!S.items[id])S.items[id]=[];
+    if(!S.items[id].includes(i))S.items[id].push(i);
+    Store.save();
+  },
+  complete(){
+    const id=S.course.id;
+    if(!S.done.includes(id)){S.done.push(id);S.lessons++;UI.addXp(30);S.gems+=2}
+    UI.confetti();UI.toast('🎉 أكملت "'+S.course.title+'"!',2500,'success');
+    Store.save();checkBadges();
+    setTimeout(()=>App.switch('learn'),1500);
+  },
+  startQz(){
+    S.mode='quiz';
+    S.qz=this.genQ(S.course.items);
+    S.qi=0;S.qs=0;
+    this.render();
+  },
+  genQ(items,count=5){
+    const arr=[];
+    sh(items).slice(0,Math.min(count,items.length)).forEach(it=>{
+      const wrong=sh(items.filter(x=>x.w!==it.w)).slice(0,3).map(x=>x.t);
+      arr.push({q:it.w,correct:it.t,opts:sh([it.t,...wrong])});
+    });
+    return arr;
+  },
+  quiz(){
+    const q=S.qz[S.qi],tot=S.qz.length,cur=S.qi+1;
+    const last=cur===tot;
+    document.getElementById('lc').innerHTML=`
+      <div class="qc">
+        <div class="qh"><span>سؤال ${cur}/${tot}</span><span>النتيجة: ${S.qs}</span></div>
+        <button class="qab" id="qab">🔊</button>
+        <div class="qq">${esc(q.q)}</div>
+        <div class="qo" id="qo">
+          ${q.opts.map((o,i)=>`<button class="qopt" data-o="${esc(o)}"><span class="n">${i+1}</span><span>${esc(o)}</span></button>`).join('')}
+        </div>
+        <div class="qf" id="qf"></div>
+        <div class="ctrl"><button class="btn bp" id="qn" style="display:none">${last?'إنهاء':'التالي →'}</button></div>
+      </div>
+    `;
+    document.getElementById('qab').onclick=()=>Sp.say(q.q);
+    if(S.sound)Sp.say(q.q);
+    document.querySelectorAll('.qopt').forEach(b=>b.onclick=()=>this.ansQ(b,q,last));
+  },
+  ansQ(btn,q,last){
+    document.querySelectorAll('.qopt').forEach(o=>o.classList.add('dis'));
+    const f=document.getElementById('qf');
+    if(btn.dataset.o===q.correct){
+      btn.classList.add('ok');
+      f.textContent='✅ صحيح! +10 XP';f.className='qf ok show';
+      S.qs++;UI.addXp(10);UI.haptic();
+    }else{
+      btn.classList.add('no');
+      document.querySelectorAll('.qopt').forEach(o=>{if(o.dataset.o===q.correct)o.classList.add('ok')});
+      f.textContent='❌ خطأ! الإجابة: '+q.correct;f.className='qf no show';
+      UI.haptic();
+    }
+    const nx=document.getElementById('qn');
+    nx.style.display='inline-flex';
+    nx.onclick=()=>{last?this.endQz():this.nextQz()};
+  },
+  nextQz(){S.qi++;this.render()},
+  endQz(){
+    const pct=Math.round((S.qs/S.qz.length)*100);
+    if(pct===100){S.perfect++;UI.confetti();UI.toast('💯 درجة كاملة!',2500,'success');UI.addXp(20);S.gems+=3}
+    else if(pct>=60)UI.toast('🎉 نجحت بـ '+pct+'%',2000,'success');
+    else UI.toast('📚 '+pct+'% - حاول مرة أخرى',2500,'warning');
+    Store.save();checkBadges();
+    setTimeout(()=>{S.mode='card';this.render()},1500);
+  },
+  listen(){
+    const c=S.course,i=c.items[S.idx],last=S.idx===c.items.length-1;
+    document.getElementById('lc').innerHTML=`
+      <div class="lnc">
+        <p style="color:var(--tl);margin-bottom:15px;font-size:.9rem">🎧 استمع واكتب الكلمة</p>
+        <button class="lnb" id="lb">🔊</button>
+        <input type="text" class="lni" id="li" placeholder="اكتب الكلمة..." autocomplete="off" autocapitalize="off" spellcheck="false">
+        <div class="qf" id="lf"></div>
+        <div class="ctrl">
+          <button class="btn bp" id="ck">تحقق</button>
+          <button class="btn bs" id="sh">إظهار</button>
+          <button class="btn bok" id="nl" style="display:none">${last?'إنهاء ✓':'التالي →'}</button>
+        </div>
+        <div class="ctrl"><button class="btn bs bsm" id="bkCard">← بطاقات</button></div>
+      </div>
+    `;
+    document.getElementById('lb').onclick=()=>{const b=document.getElementById('lb');b.classList.add('playing');Sp.say(i.w,S.lang,.7,()=>b.classList.remove('playing'))};
+    setTimeout(()=>Sp.say(i.w,S.lang,.7),300);
+    const inp=document.getElementById('li'),f=document.getElementById('lf');
+    const check=()=>{
+      const v=inp.value.trim().toLowerCase(),c2=i.w.toLowerCase();
+      if(v===c2){
+        inp.classList.add('ok');
+        f.textContent='✅ ممتاز! +15 XP';f.className='qf ok show';
+        UI.addXp(15);UI.confetti();UI.haptic();
+        document.getElementById('ck').style.display='none';
+        document.getElementById('sh').style.display='none';
+        document.getElementById('nl').style.display='inline-flex';
+      }else{
+        inp.classList.add('no');
+        f.textContent='❌ حاول مرة أخرى (تلميح: '+i.w.length+' أحرف)';
+        f.className='qf no show';
+        setTimeout(()=>inp.classList.remove('no'),600);
+      }
+    };
+    document.getElementById('ck').onclick=check;
+    inp.onkeydown=e=>{if(e.key==='Enter')check()};
+    document.getElementById('sh').onclick=()=>{
+      inp.value=i.w;inp.classList.add('ok');
+      f.textContent='الإجابة: '+i.w;f.className='qf ok show';
+      document.getElementById('ck').style.display='none';
+      document.getElementById('sh').style.display='none';
+      document.getElementById('nl').style.display='inline-flex';
+    };
+    document.getElementById('nl').onclick=()=>{last?this.complete():this.nextLi()};
+    document.getElementById('bkCard').onclick=()=>{S.mode='card';this.render()};
+  },
+  nextLi(){S.idx++;this.render()},
+  speak(){
+    const c=S.course,i=c.items[S.idx],last=S.idx===c.items.length-1;
+    document.getElementById('lc').innerHTML=`
+      <div class="spc">
+        <p style="color:var(--tl);margin-bottom:15px;font-size:.9rem">🎤 انطق الكلمة بوضوح</p>
+        <div class="spt">
+          <div class="spw">${esc(i.w)}</div>
+          <div class="spp">${esc(i.p)}</div>
+          <button class="spb" id="spl" style="margin:12px auto 0;background:var(--p);border-color:var(--p)">🔊</button>
+        </div>
+        <button class="mic" id="mic">🎤</button>
+        <p style="color:var(--tl);font-size:.8rem">اضغط للبدء بالتسجيل</p>
+        <div class="spr" id="sr"></div>
+        <div class="ctrl">
+          <button class="btn bs" id="bkCard">← رجوع</button>
+          <button class="btn bok" id="nl" style="display:none">${last?'إنهاء ✓':'التالي →'}</button>
+        </div>
+      </div>
+    `;
+    document.getElementById('spl').onclick=()=>Sp.say(i.w,S.lang,.7);
+    setTimeout(()=>Sp.say(i.w,S.lang,.7),300);
+    const mic=document.getElementById('mic'),res=document.getElementById('sr');
+    mic.onclick=()=>{
+      if(!Sp.recSup){UI.toast('⚠️ متصفحك لا يدعم الميكروفون',3000,'warning');return}
+      if(S.recog){S.recog.stop();S.recog=null;mic.classList.remove('rec');mic.textContent='🎤';return}
+      mic.classList.add('rec');mic.textContent='⏹️';
+      res.className='spr';
+      S.recog=Sp.rec(S.lang,(tr,conf)=>{
+        mic.classList.remove('rec');mic.textContent='🎤';S.recog=null;
+        const acc=this.calcAcc(i.w,tr);
+        let col='var(--err)',em='❌',msg='حاول مرة أخرى';
+        if(acc>=90){col='var(--ok)';em='🌟';msg='نطق ممتاز!';UI.addXp(20);UI.confetti();document.getElementById('nl').style.display='inline-flex'}
+        else if(acc>=70){col='var(--warn)';em='👍';msg='نطق جيد';UI.addXp(10);document.getElementById('nl').style.display='inline-flex'}
+        else if(acc>=50){col='#3b82f6';em='💪';msg='مقبول - حاول مرة أخرى';UI.addXp(5)}
+        res.style.background=col+'22';res.style.border='2px solid '+col;
+        res.innerHTML=`
+          <div class="sc" style="color:${col}">${acc}%</div>
+          <div style="font-size:1.05rem;margin-bottom:6px">${em} ${msg}</div>
+          <div style="color:var(--tl);font-size:.85rem">
+            قلت: "<strong style="color:var(--tx)">${esc(tr)}</strong>"
+          </div>
+        `;
+        res.classList.add('show');UI.haptic();Store.save();
+      },err=>{
+        mic.classList.remove('rec');mic.textContent='🎤';S.recog=null;
+        if(err==='no-speech')UI.toast('🔇 لم نسمع صوتاً',2000,'warning');
+        else if(err==='not-allowed')UI.toast('🚫 اسمح بالوصول للميكروفون',3000,'error');
+        else UI.toast('⚠️ '+err,2000,'error');
+      });
+    };
+    document.getElementById('bkCard').onclick=()=>{if(S.recog)S.recog.stop();S.mode='card';this.render()};
+    document.getElementById('nl').onclick=()=>{if(S.recog)S.recog.stop();last?this.complete():this.nextLi()};
+  },
+  calcAcc(t,s){
+    t=t.toLowerCase().trim();s=s.toLowerCase().trim();
+    if(t===s)return 100;
+    const m=Array(s.length+1).fill(null).map(()=>Array(t.length+1).fill(0));
+    for(let i=0;i<=t.length;i++)m[0][i]=i;
+    for(let j=0;j<=s.length;j++)m[j][0]=j;
+    for(let j=1;j<=s.length;j++)for(let i=1;i<=t.length;i++){
+      const c=s[j-1]===t[i-1]?0:1;
+      m[j][i]=Math.min(m[j-1][i]+1,m[j][i-1]+1,m[j-1][i-1]+c);
+    }
+    const d=m[s.length][t.length];
+    return Math.max(0,Math.round((1-d/Math.max(t.length,s.length))*100));
+  }
+};
+
+// ============ PRACTICE ============
+const Practice={
+  start(type){
+    const all=[];
+    Object.values(DB[S.lang].levels).forEach(lv=>lv.courses.forEach(c=>c.items.forEach(i=>all.push(i))));
+    S.course={id:'pr_'+Date.now(),icon:'🎯',title:'تدريب عشوائي',items:sh(all).slice(0,8)};
+    S.idx=0;
+    if(type==='quiz'){S.mode='quiz';S.qz=Lesson.genQ(S.course.items,8);S.qi=0;S.qs=0;Lesson.render()}
+    else if(type==='listening'){S.mode='listening';Lesson.render()}
+    else if(type==='speaking'){S.mode='speaking';Lesson.render()}
+    else{S.mode='card';Lesson.render()}
+  },
+  openConv(id){
+    const c=DB[S.lang].conversations.find(x=>x.id===id);
+    if(!c)return;
+    S.conv={...c,current:0};
+    this.renderConv();
+  },
+  renderConv(){
+    const c=S.conv;
+    document.getElementById('mn').innerHTML=Views.conversation(c);
+    if(S.sound)Sp.say(c.lines[c.current].text,S.lang);
+    document.querySelectorAll('.spb[data-text]').forEach(b=>{
+      b.onclick=e=>{e.stopPropagation();Sp.say(b.dataset.text,S.lang)};
+    });
+    document.getElementById('bkBtn').onclick=()=>{Sp.stop();App.switch('home')};
+    document.getElementById('prevConv').onclick=()=>{if(c.current>0){c.current--;this.renderConv()}};
+    document.getElementById('nextConv').onclick=()=>{
+      if(c.current===c.lines.length-1){
+        UI.confetti();UI.toast('🎉 أكملت المحادثة! +20 XP',2500,'success');
+        UI.addXp(20);S.gems+=2;
+        setTimeout(()=>App.switch('home'),1500);
+      }else{c.current++;UI.addXp(2);this.renderConv()}
+    };
+  }
+};
+
+// ============ PWA ============
+const PWA={
+  deferredPrompt:null,
+  
+  init(){
+    this.registerSW();
+    
+    window.addEventListener('beforeinstallprompt',e=>{
+      e.preventDefault();
+      this.deferredPrompt=e;
+      if(!localStorage.getItem('lp_ibDismissed')){
+        const b=document.getElementById('installBanner');
+        if(b)b.classList.add('show');
+      }
+    });
+    
+    window.addEventListener('appinstalled',()=>{
+      UI.toast('✅ تم تثبيت التطبيق!',3000,'success');
+      const b=document.getElementById('installBanner');
+      if(b)b.classList.remove('show');
+    });
+    
+    if(window.matchMedia('(display-mode: standalone)').matches||window.navigator.standalone){
+      document.body.classList.add('pwa-mode');
+    }
+    
+    const banner=document.getElementById('offlineBanner');
+    const upd=()=>{
+      if(navigator.onLine)banner.classList.remove('show');
+      else banner.classList.add('show');
+    };
+    window.addEventListener('online',()=>{upd();UI.toast('✅ عاد الاتصال',2000,'success')});
+    window.addEventListener('offline',()=>{upd();UI.toast('📴 انقطع الاتصال',3000,'warning')});
+    upd();
+  },
+  
+  async registerSW(){
+    if(!('serviceWorker' in navigator))return;
+    if(location.protocol==='file:')return;
+    
+    const swCode=`
+      const CACHE='linguapro-v6';
+      const ASSETS=['./','./index.html'];
+      self.addEventListener('install',e=>{
+        e.waitUntil(caches.open(CACHE).then(c=>c.addAll(ASSETS).catch(()=>{})).then(()=>self.skipWaiting()));
+      });
+      self.addEventListener('activate',e=>{
+        e.waitUntil(caches.keys().then(k=>Promise.all(k.filter(x=>x!==CACHE).map(x=>caches.delete(x)))).then(()=>self.clients.claim()));
+      });
+      self.addEventListener('fetch',e=>{
+        if(e.request.method!=='GET')return;
+        e.respondWith(
+          caches.match(e.request).then(cached=>{
+            const fp=fetch(e.request).then(r=>{
+              if(r&&r.status===200){
+                const clone=r.clone();
+                caches.open(CACHE).then(c=>c.put(e.request,clone));
+              }
+              return r;
+            }).catch(()=>cached);
+            return cached||fp;
+          })
+        );
+      });
+    `;
+    
+    try{
+      try{
+        const response=await fetch('sw.js',{method:'HEAD'});
+        if(response.ok){
+          await navigator.serviceWorker.register('sw.js');
+          console.log('[PWA] SW from file');
+          return;
+        }
+      }catch(e){}
+      
+      const blob=new Blob([swCode],{type:'application/javascript'});
+      const url=URL.createObjectURL(blob);
+      await navigator.serviceWorker.register(url);
+      console.log('[PWA] SW from blob');
+    }catch(e){
+      console.warn('[PWA] SW failed:',e);
+    }
+  },
+  
+  async install(){
+    if(!this.deferredPrompt){
+      UI.toast('💡 افتح قائمة المتصفح ← "إضافة إلى الشاشة الرئيسية"',4000,'warning');
+      return;
+    }
+    this.deferredPrompt.prompt();
+    const{outcome}=await this.deferredPrompt.userChoice;
+    if(outcome==='accepted')UI.toast('✅ جاري التثبيت...',2000,'success');
+    this.deferredPrompt=null;
+  }
+};
+
+// ============ APP ============
+const App={
+  init(){
+    Sp.init();
+    Store.load();
+    
+    document.body.setAttribute('data-theme',S.theme);
+    document.getElementById('themeBtn').textContent=S.theme==='dark'?'☀️':'🌙';
+    UI.stats();
+    
+    // حذف البيانات القديمة
+    localStorage.removeItem('linguapro_subscription');
+    
+    // ✅ بدء التجربة تلقائياً إن لم تكن بدأت
+    if(!Activation.getTrialData()&&!Activation.isActivated()){
+      Activation.startTrial();
+    }
+    
+    const canAccess=Activation.canAccess();
+    const isActivated=Activation.isActivated();
+    
+    console.log('[Activation] Device ID:',Activation.getDeviceId());
+    console.log('[Activation] Activated:',isActivated);
+    console.log('[Activation] Trial days left:',Activation.getTrialDaysLeft());
+    console.log('[Activation] Can access:',canAccess);
+    
+    setTimeout(()=>{
+      document.getElementById('splash').style.opacity='0';
+      document.getElementById('splash').style.transition='opacity .5s';
+      setTimeout(()=>{
+        document.getElementById('splash').classList.add('hide');
+        
+        if(!canAccess){
+          Activation.show();
+          return;
+        }
+        
+        if(!localStorage.getItem('lp_on')){
+          document.getElementById('ob').classList.remove('hide');
+        }else{
+          document.getElementById('app').classList.remove('hide');
+          Activation.updateTrialBanner();
+          App.switch('home');
+        }
+      },500);
+    },1800);
+    
+    this.events();
+    PWA.init();
+  },
+  
+  switch(v){
+    S.view=v;
+    document.querySelectorAll('.nb').forEach(b=>b.classList.toggle('active',b.dataset.v===v));
+    const mn=document.getElementById('mn');
+    mn.innerHTML=Views[v]?Views[v]():'';
+    mn.style.animation='none';setTimeout(()=>mn.style.animation='fi .4s',10);
+    this.bind();
+    window.scrollTo({top:0,behavior:'smooth'});
+  },
+  
+  bind(){
+    document.querySelectorAll('[data-course]').forEach(e=>{
+      e.onclick=()=>Lesson.open(e.dataset.course);
+    });
+    
+    document.querySelectorAll('[data-practice]').forEach(e=>{
+      e.onclick=()=>Practice.start(e.dataset.practice);
+    });
+    
+    document.querySelectorAll('[data-conv]').forEach(e=>{
+      e.onclick=()=>Practice.openConv(e.dataset.conv);
+    });
+    
+    document.querySelectorAll('[data-v]').forEach(e=>{
+      e.onclick=ev=>{ev.preventDefault();App.switch(e.dataset.v)};
+    });
+    
+    document.querySelectorAll('[data-lang]').forEach(e=>{
+      e.onclick=()=>{S.lang=e.dataset.lang;Store.save();App.switch('home')};
+    });
+    
+    const ib=document.getElementById('installBtn');
+    if(ib)ib.onclick=()=>PWA.install();
+    const ic=document.getElementById('installClose');
+    if(ic)ic.onclick=()=>{
+      document.getElementById('installBanner').classList.remove('show');
+      localStorage.setItem('lp_ibDismissed','1');
+    };
+    
+    if(S.view==='profile')this.profileEvents();
+  },
+  
+  profileEvents(){
+    const th=document.getElementById('stTheme');
+    if(th)th.onchange=e=>{
+      S.theme=e.target.checked?'dark':'light';
+      document.body.setAttribute('data-theme',S.theme);
+      document.getElementById('themeBtn').textContent=S.theme==='dark'?'☀️':'🌙';
+      Store.save();
+    };
+    
+    const so=document.getElementById('stSound');
+    if(so)so.onchange=e=>{S.sound=e.target.checked;Store.save();UI.toast(e.target.checked?'🔊 الصوت مفعل':'🔇 الصوت معطل',1500)};
+    
+    const hp=document.getElementById('stHaptic');
+    if(hp)hp.onchange=e=>{S.haptic=e.target.checked;Store.save()};
+    
+    document.querySelectorAll('.goal-btn').forEach(b=>{
+      b.onclick=()=>{
+        S.goal=parseInt(b.dataset.goal);
+        Store.save();UI.stats();
+        UI.toast('🎯 الهدف: '+S.goal+' XP',1500,'success');
+        App.switch('profile');
+      };
+    });
+    
+    const up=document.getElementById('upgradeProfileBtn');
+    if(up)up.onclick=()=>Activation.show();
+    
+    const rs=document.getElementById('resetBtn');
+    if(rs)rs.onclick=()=>{
+      UI.modal(`<button class="mx" id="mx">✕</button>
+        <h2>⚠️ إعادة تعيين</h2>
+        <p style="color:var(--tl);margin-bottom:15px">سيتم حذف تقدمك في الدروس فقط.</p>
+        <div style="display:flex;gap:8px">
+          <button class="btn bs bf" id="cc">إلغاء</button>
+          <button class="btn berr bf" id="ok">تأكيد</button>
+        </div>`);
+      document.getElementById('mx').onclick=UI.closeModal;
+      document.getElementById('cc').onclick=UI.closeModal;
+      document.getElementById('ok').onclick=()=>{
+        S.done=[];S.items={};S.lessons=0;
+        Store.save();UI.closeModal();
+        UI.toast('✅ تم',1500,'success');
+        App.switch('profile');
+      };
+    };
+    
+    const cs=document.getElementById('contactSupportBtn');
+    if(cs)cs.onclick=()=>Activation.sendToWhatsApp();
+  },
+  
+  events(){
+    document.querySelectorAll('.nb').forEach(b=>{
+      b.onclick=()=>{UI.haptic();App.switch(b.dataset.v)};
+    });
+    
+    document.getElementById('logoBtn').onclick=()=>App.switch('home');
+    
+    document.getElementById('themeBtn').onclick=()=>{
+      S.theme=S.theme==='dark'?'light':'dark';
+      document.body.setAttribute('data-theme',S.theme);
+      document.getElementById('themeBtn').textContent=S.theme==='dark'?'☀️':'🌙';
+      Store.save();
+    };
+    
+    document.getElementById('modal').onclick=e=>{if(e.target.id==='modal')UI.closeModal()};
+    
+    // Trial banner upgrade
+    document.getElementById('upgradeNow').onclick=()=>Activation.show();
+    
+    // Activation events
+    document.getElementById('whatsappBtn').onclick=()=>Activation.sendToWhatsApp();
+    
+    document.getElementById('copyDeviceId').onclick=()=>{
+      const deviceId=Activation.getDeviceId();
+      navigator.clipboard.writeText(deviceId).then(()=>{
+        UI.toast('✅ تم نسخ Device ID',1500,'success');
+      }).catch(()=>{
+        UI.toast('انسخ يدوياً: '+deviceId,5000);
+      });
+    };
+    
+    document.getElementById('haveCodeBtn').onclick=()=>Activation.showStep2();
+    document.getElementById('backStep1').onclick=()=>Activation.showStep1();
+    document.getElementById('contactSellerBtn').onclick=()=>Activation.sendToWhatsApp();
+    
+    document.getElementById('activateBtn').onclick=()=>{
+      const code=document.getElementById('licenseInput').value.trim();
+      const feedback=document.getElementById('licenseFeedback');
+      
+      if(!code){
+        feedback.textContent='❌ أدخل الكود';
+        feedback.className='qf no show';
+        return;
+      }
+      
+      if(Activation.isValidCode(code)){
+        Activation.save(code);
+        feedback.textContent='✅ تم التفعيل بنجاح!';
+        feedback.className='qf ok show';
+        UI.confetti();
+        
+        setTimeout(()=>{
+          Activation.hide();
+          document.getElementById('app').classList.remove('hide');
+          Activation.updateTrialBanner();
+          UI.toast('👑 مرحباً بك في LinguaPro!',3000,'success');
+          App.switch('home');
+        },1500);
+      }else{
+        feedback.textContent='❌ كود غير صحيح أو خاص بجهاز آخر';
+        feedback.className='qf no show';
+        UI.haptic();
+      }
+    };
+    
+    document.getElementById('licenseInput').onkeydown=e=>{
+      if(e.key==='Enter')document.getElementById('activateBtn').click();
+    };
+    
+    // Onboarding
+    let s=0;
+    const slides=document.querySelectorAll('.ob-s');
+    const dots=document.querySelectorAll('.dot');
+    const nxt=document.getElementById('obNext');
+    const upd=()=>{
+      slides.forEach((x,i)=>x.classList.toggle('hide',i!==s));
+      dots.forEach((d,i)=>d.classList.toggle('active',i===s));
+      nxt.textContent=s===slides.length-1?'ابدأ 🚀':'التالي';
+    };
+    const fin=()=>{
+      localStorage.setItem('lp_on','1');
+      document.getElementById('ob').classList.add('hide');
+      document.getElementById('app').classList.remove('hide');
+      Activation.updateTrialBanner();
+      App.switch('home');
+    };
+    nxt.onclick=()=>{if(s<slides.length-1){s++;upd()}else fin()};
+    document.getElementById('obSkip').onclick=fin;
+  }
+};
+
+// ============ BOOT ============
+document.addEventListener('DOMContentLoaded',()=>App.init());
+window.addEventListener('beforeunload',()=>Store.save());
+
+document.addEventListener('keydown',e=>{
+  if(e.code==='Space'&&S.mode==='card'){
+    const fc=document.getElementById('fc');
+    if(fc){e.preventDefault();fc.classList.toggle('flip')}
+  }
+  if(e.code==='ArrowRight')document.getElementById('nx')?.click();
+  if(e.code==='ArrowLeft')document.getElementById('pv')?.click();
+});
+</script>
+</body>
+</html>

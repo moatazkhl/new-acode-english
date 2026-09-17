@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>LinguaPro - مولّد أكواد التفعيل</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;font-family:-apple-system,'Segoe UI',Tahoma,sans-serif}
+body{background:linear-gradient(135deg,#6366f1,#ec4899);min-height:100vh;padding:20px;display:flex;align-items:center;justify-content:center;color:#fff}
+.box{background:rgba(255,255,255,.1);backdrop-filter:blur(20px);border:2px solid rgba(255,255,255,.3);border-radius:24px;padding:30px;max-width:500px;width:100%}
+h1{font-size:1.5rem;margin-bottom:8px;text-align:center}
+.sub{text-align:center;opacity:.9;font-size:.9rem;margin-bottom:25px}
+label{display:block;font-weight:800;margin-bottom:8px;font-size:.9rem}
+input,textarea{width:100%;padding:14px;border-radius:14px;border:2px solid rgba(255,255,255,.3);background:rgba(255,255,255,.15);color:#fff;font-family:monospace;font-size:1rem;font-weight:700;outline:none;transition:.3s}
+input:focus,textarea:focus{border-color:#fff;background:rgba(255,255,255,.25)}
+input::placeholder,textarea::placeholder{color:rgba(255,255,255,.6)}
+.btn{background:#fff;color:#6366f1;padding:14px 24px;border:none;border-radius:14px;font-size:1rem;font-weight:900;cursor:pointer;width:100%;margin-top:15px;transition:.3s}
+.btn:active{transform:scale(.97)}
+.result{background:rgba(0,0,0,.3);border-radius:14px;padding:20px;margin-top:20px;display:none}
+.result.show{display:block;animation:fade .3s}
+@keyframes fade{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+.code{font-family:monospace;font-size:1.3rem;font-weight:900;letter-spacing:2px;background:#fff;color:#6366f1;padding:15px;border-radius:12px;text-align:center;margin:10px 0;word-break:break-all}
+.info{font-size:.8rem;opacity:.85;margin-top:10px;line-height:1.7}
+.warn{background:rgba(239,68,68,.3);border:2px solid #ef4444;padding:12px;border-radius:12px;margin-bottom:20px;font-size:.85rem;line-height:1.7}
+</style>
+</head>
+<body>
+<div class="box">
+  <h1>🔐 مولّد أكواد LinguaPro</h1>
+  <p class="sub">أداة خاصة بالبائع فقط - لا تشاركها</p>
+  
+  <div class="warn">
+    ⚠️ احتفظ بهذا الملف عندك فقط<br>
+    ❌ لا ترفعه على الإنترنت<br>
+    ❌ لا ترسله لأي شخص
+  </div>
+  
+  <label>📱 Device ID العميل</label>
+  <input type="text" id="deviceId" placeholder="LP-XXXX-XXXX" style="text-transform:uppercase">
+  
+  <button class="btn" id="generateBtn">🎁 توليد كود التفعيل</button>
+  
+  <div class="result" id="result">
+    <label>✅ كود التفعيل:</label>
+    <div class="code" id="codeOut">----</div>
+    <button class="btn" id="copyBtn" style="background:rgba(255,255,255,.2);color:#fff;margin-top:10px">📋 نسخ الكود</button>
+    
+    <div class="info">
+      <strong>📤 أرسل للعميل:</strong><br>
+      السلام عليكم،<br>
+      شكراً لشرائك LinguaPro!<br>
+      كود التفعيل الخاص بك:<br>
+      <strong id="codeInfo">----</strong><br>
+      أدخله في التطبيق وسيعمل مدى الحياة على جهازك.
+    </div>
+  </div>
+</div>
+
+<script>
+// ==========================================================
+// ⚠️ مفتاح سري - يجب أن يكون نفسه في التطبيق الرئيسي
+// لا تشاركه مع أحد
+// ==========================================================
+const SECRET_KEY = 'LPX-2024-LINGUAPRO-SECRET-V1-DO-NOT-SHARE';
+
+// ==========================================================
+// دالة توليد الكود من Device ID
+// ==========================================================
+function generateActivationCode(deviceId) {
+  // تنظيف الـ Device ID
+  const cleanId = deviceId.trim().toUpperCase().replace(/[^A-Z0-9]/g, '');
+  
+  if(cleanId.length < 8) {
+    throw new Error('Device ID غير صالح');
+  }
+  
+  // دمج الـ Device ID مع المفتاح السري
+  const combined = cleanId + SECRET_KEY;
+  
+  // حساب Hash (FNV-1a 64-bit مع تجزئة متعددة)
+  let hash1 = 0x811c9dc5;
+  let hash2 = 0x1000193;
+  let hash3 = 0x9e3779b9;
+  
+  for(let i = 0; i < combined.length; i++) {
+    const c = combined.charCodeAt(i);
+    hash1 ^= c;
+    hash1 = (hash1 * 0x01000193) >>> 0;
+    hash2 = ((hash2 << 5) - hash2 + c) >>> 0;
+    hash3 ^= (c * 0x85ebca6b) >>> 0;
+    hash3 = ((hash3 << 13) | (hash3 >>> 19)) >>> 0;
+  }
+  
+  // توليد مزيج من الأحرف والأرقام (بدون أحرف متشابهة 0/O، 1/I/L)
+  const chars = 'ABCDEFGHJKMNPQRSTUVWXYZ23456789';
+  
+  let code = 'LPX';
+  let h1 = hash1;
+  let h2 = hash2;
+  let h3 = hash3;
+  
+  for(let i = 0; i < 12; i++) {
+    if(i % 4 === 0 && i > 0) code += '-';
+    h1 = ((h1 * 1103515245) + 12345) >>> 0;
+    h2 = ((h2 * 22695477) + 1) >>> 0;
+    h3 = ((h3 ^ (h3 >>> 7)) * 0x5bd1e995) >>> 0;
+    
+    const idx = (h1 + h2 + h3 + i * 31) % chars.length;
+    code += chars.charAt(idx);
+  }
+  
+  return code;
+}
+
+// ==========================================================
+// أحداث الواجهة
+// ==========================================================
+const deviceInput = document.getElementById('deviceId');
+const generateBtn = document.getElementById('generateBtn');
+const result = document.getElementById('result');
+const codeOut = document.getElementById('codeOut');
+const codeInfo = document.getElementById('codeInfo');
+const copyBtn = document.getElementById('copyBtn');
+
+generateBtn.onclick = () => {
+  try {
+    const deviceId = deviceInput.value.trim();
+    
+    if(!deviceId) {
+      alert('❌ أدخل Device ID العميل');
+      return;
+    }
+    
+    const code = generateActivationCode(deviceId);
+    
+    codeOut.textContent = code;
+    codeInfo.textContent = code;
+    result.classList.add('show');
+  } catch(e) {
+    alert('❌ خطأ: ' + e.message);
+  }
+};
+
+copyBtn.onclick = () => {
+  const text = `السلام عليكم،
+شكراً لشرائك LinguaPro! 🎉
+
+كود التفعيل الخاص بك:
+${codeOut.textContent}
+
+📌 ملاحظات مهمة:
+• الكود يعمل على جهاز واحد فقط
+• لا يمكن استخدامه على جهاز آخر
+• احتفظ به في مكان آمن
+
+شكراً لثقتك بنا 🌍`;
+  
+  navigator.clipboard.writeText(text).then(() => {
+    copyBtn.textContent = '✅ تم النسخ!';
+    setTimeout(() => copyBtn.textContent = '📋 نسخ الكود', 2000);
+  }).catch(() => {
+    alert('انسخ الكود يدوياً:\n\n' + text);
+  });
+};
+
+// Allow Enter
+deviceInput.addEventListener('keydown', e => {
+  if(e.key === 'Enter') generateBtn.click();
+});
+
+// Test button
+console.log('🧪 اختبار:');
+console.log('Device: LP-A3F7B2-E9C1');
+console.log('Code:', generateActivationCode('LP-A3F7B2-E9C1'));
+</script>
+</body>
+</html>
